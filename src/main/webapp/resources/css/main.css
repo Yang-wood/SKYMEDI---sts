@@ -62,6 +62,7 @@ header:hover .headD a {
 .headA:hover {
   transform: scale(1.1); /* 마우스 올라갔을 때 살짝 확대 */
   transition: transform 0.3s ease;
+  text-decoration: none;
 }
 
 .headB .hB-small:hover {
@@ -193,6 +194,10 @@ header:hover .headD a:hover {
 		justify-content: space-between;
 	}
 	
+	.headA {
+		padding-top: 10px;
+	}
+	
 	.allMenu {
     margin-right: 10px;
 		padding: 0;
@@ -248,21 +253,22 @@ header:hover .headD a:hover {
   }
 }
 
-.conA {
+.main-conA {
   display: flex;
   text-align: center;
   justify-content: center;
   height: 70vh;
   min-height: 200px;
+  padding: 2rem;
   background-position: center;
-	background-size: cover;
+  background-size: cover;
   background-repeat: no-repeat;
-  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url(/resources/img/main_conA1.png);
-	color: #fff;
-	color: var(--text-bright-color);
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url(../img/main_conA1.png);
+  color: var(--text-bright-color);
   position: relative;
+  box-sizing: border-box;
 }
-.conA h2 {
+.main-conA h2 {
   position: absolute;
   top: 50%;
   left: 33%;
@@ -272,7 +278,7 @@ header:hover .headD a:hover {
   z-index: 1;
 }
 
-.conA p {
+.main-conA p {
   position: absolute;
   top: 60%;
   left: 33%;
@@ -281,7 +287,54 @@ header:hover .headD a:hover {
   z-index: 1;
 }
 
+.conA {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  height: 50vh;
+  max-height: 300px;
+  background-position: center;
+	background-size: cover;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url(../img/sub_conA.png);
+	color: #fff;
+	color: var(--text-bright-color);
+  position: relative;
+}
+.conA h1 {
+  position: absolute;  
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3em;
+  margin: 0;
+  z-index: 1;
+}
+
 .conB {
+    font-family: 'Montserrat', sans-serif;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .main-conA {
+    height: auto; /* 뷰포트 높이 대신 컨텐츠 높이에 맞춤 */
+    min-height: 300px;
+    padding: 3rem 1.5rem;
+  }
+  
+  .conA {
+    height: auto; /* 뷰포트 높이 대신 컨텐츠 높이에 맞춤 */
+    min-height: 300px;
+    padding: 3rem 1.5rem;
+  }
+}
+
+.main-conB {
   display: flex;
   text-align: center;
   justify-content: center;
@@ -289,7 +342,7 @@ header:hover .headD a:hover {
   min-height: 450px;
   background-color: rgb(0, 80, 0);
 }
-.conC {
+.main-conC {
   display: flex;
   text-align: center;
   justify-content: center;
@@ -406,10 +459,13 @@ footer .contain {
         width: 100%; /* 화면 너비에 맞게 */
     }
 
-    .footA, .footC {
-        width: 80%; /* footA와 footC의 너비를 80%로 설정 */
+    .footA {
+        width: 80%; /* footA의 너비를 80%로 설정 */
         margin-bottom: 20px; /* 간격 추가 */
+        padding-top: 10px;
+        padding-bottom: 10px;
         text-align: center; /* 텍스트를 가운데 정렬 */
+        gap: 10px;
     }
 
     .footC {
@@ -418,6 +474,10 @@ footer .contain {
 
     .footA {
         align-items: center;
+    }
+    
+    .footA p {
+    	margin: 0 auto;
     }
 
     .footC h2 a {

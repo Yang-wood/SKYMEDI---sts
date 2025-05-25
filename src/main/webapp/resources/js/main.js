@@ -7,26 +7,8 @@
 	const headD = $(".headD");
 
 	if (window.innerWidth > 968) {
-		headB.slideUp(300);
-		headD.fadeIn(200);
-	}
-}
-
-function changeLogin(loginstate) {
-	if (loginstate) {
-		$(".headD").html(`
-            <ul>
-				<li><a href="logout.html">로그아웃</a></li>
-                <li><a href="mypage.html">마이페이지</a></li>
-            </ul>
-        `);
-	} else {
-		$(".headD").html(`
-            <ul>
-                <li><a href="login.html">로그인</a></li>
-                <li><a href="signup.html">회원가입</a></li>
-            </ul>
-        `);
+		headB.stop(true, true).slideUp(0);
+		headD.stop(true, true).fadeIn(0);
 	}
 }
 
@@ -38,34 +20,42 @@ $(document).ready(function(){
 		const headD = $(".headD");
 
 		if (headB.is(":visible")) {
-			headB.slideUp(300);
-			headD.fadeIn(200);
+			headB.stop(true, true).slideUp(300);
+			headD.stop(true, true).fadeIn(200);
 		} else {
-			headB.slideDown(300);
-			headD.fadeOut(200);
+			headB.stop(true, true).slideDown(300);
+			headD.stop(true, true).fadeOut(200);
 		}
 	});
 	
-	$(window).on('scroll', function() {
+	// 스크롤 시 헤더 처리
+	function handleScroll() {
 		const header = $(".mainHeader");
 		const headB = $(".headB");
 		const headD = $(".headD");
 
 		if ($(window).scrollTop() > 10) {
 			header.addClass("scrolled");
-			setTimeout(function () {
+			setTimeout(function() {
 				header.removeClass("scrolled");
 			}, 1000);
 		} else {
 			header.removeClass("scrolled");
 		}
-		headB.slideUp(300);
-		headD.fadeIn(200);
-	});
 
+		// 스크롤 시 메뉴 닫기 (모바일)
+		if (window.innerWidth <= 968 && headB.is(":visible")) {
+			headB.stop(true, true).slideUp(500);
+			headD.stop(true, true).fadeIn(500);
+		}
+	}
+	
+	$(window).on("scroll", handleScroll);
+	
 	$(window).on('resize', function(){
 		checkAllMenuVisible();
 	});
 	checkAllMenuVisible();
+	handleScroll();
 });
 

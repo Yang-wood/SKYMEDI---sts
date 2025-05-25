@@ -2,6 +2,18 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.medi.sky.memberMapper">
-
+<mapper namespace="com.medi.sky.mapper.MemberMapper">
+	<insert id="insertMember">
+		INSERT INTO member
+		(mno, username, password, name, birth_date, phone, email, regidate)
+		VALUES
+		(member_seq.NEXTVAL, #{username}, #{password}, #{name}, 
+		#{birth_date}, #{phone}, #{email}, sysdate)
+	</insert>
+	
+	<select id="existId" resultType="int">
+		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+		FROM member
+		WHERE username = #{username}
+	</select>
 </mapper>

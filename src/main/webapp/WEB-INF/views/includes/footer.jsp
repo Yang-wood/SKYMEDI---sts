@@ -48,7 +48,7 @@
 			 	</nav>
             </div>
             <div class="footC">
-                <h2><a href="main.html">하늘병원</a></h2>
+                <h2><a href="<c:url value='/'/>">하늘병원</a></h2>
             </div>
 
         </div>
@@ -82,5 +82,6 @@
 	        .attr("style","height:1px");
 	    });
     </script>
+    <script src="<c:url value='/resources/js/main.js'/>"></script>
 </body>
 </html>
