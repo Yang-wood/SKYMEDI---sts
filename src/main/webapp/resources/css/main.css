@@ -199,7 +199,7 @@ header:hover .headD a:hover {
 	}
 	
 	.allMenu {
-    margin-right: 10px;
+    	margin-right: 10px;
 		padding: 0;
 		border: none;
 		outline: none;
@@ -207,10 +207,10 @@ header:hover .headD a:hover {
 		font-size: 28px;
 		opacity: 0.5;
 		cursor: pointer;
-    background-color: rgba(255, 255, 255, 0); /* 투명 */
+    	background-color: rgba(255, 255, 255, 0); /* 투명 */
 	}
 	.allMenu .fa-bars {
-    color: #fff
+    	color: #fff
   }
 
 	.allMenu:hover {
@@ -218,7 +218,7 @@ header:hover .headD a:hover {
 	}
 
 	.headB {
-		display: none;
+	 display: none;
 	}
   
   .headB li {
