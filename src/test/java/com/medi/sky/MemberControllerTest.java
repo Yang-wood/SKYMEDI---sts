@@ -49,8 +49,6 @@ public class MemberControllerTest {
 //					.param("username", "test11")
 //					.param("password", "test11")
 //					.param("name", "test11")
-//					.param("birth_date", "2000-01-11")
-//					.param("phone", "01012345681")
 //					.param("email", "test11@test.com"))
 //					.andReturn().getResponse().getRedirectedUrl();
 //			
@@ -62,7 +60,6 @@ public class MemberControllerTest {
 //		} catch (Exception e) {
 //			log.error("에러", e);
 //		}
-//		
 //	}
 	
 	//테스트 회원 정보 반복 입력
@@ -95,19 +92,19 @@ public class MemberControllerTest {
 //	}
 	
 	// 아이디 중복 테스트
-//	@Test
-//	public void testExistID() throws Exception {
-//		String name = "test10";
-//		
-//		String rs = mockMvc.perform(MockMvcRequestBuilders.get("/member/existID")
-//				.param("username", name))
-//		.andReturn().getResponse().getContentAsString();
-//		
-//		if (rs.equals("1")) {
-//			log.info("아이디 있음");
-//		} else {
-//			log.info("아이디 없음");
-//		}
-//	}
+	@Test
+	public void testExistID() throws Exception {
+		String name = "test10";
+		
+		String rs = mockMvc.perform(MockMvcRequestBuilders.get("/member/existID")
+				.param("username", name))
+		.andReturn().getResponse().getContentAsString();
+		
+		if (rs.equals("1")) {
+			log.info("아이디 있음");
+		} else {
+			log.info("아이디 없음");
+		}
+	}
 
 }

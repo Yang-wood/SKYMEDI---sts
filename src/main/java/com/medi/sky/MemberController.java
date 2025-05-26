@@ -26,10 +26,9 @@ public class MemberController {
 	@Autowired
 	private IMemberService service;
 	
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+	@GetMapping("/login")
+	public void loginGet() throws Exception {
+		log.info("login Get..........");
 	}
 	
 	@GetMapping("/register")

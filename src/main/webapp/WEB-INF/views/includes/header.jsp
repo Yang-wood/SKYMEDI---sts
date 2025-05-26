@@ -1,4 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<c:set var="ctx" 
+       value="${pageContext.request.contextPath == '/' ? '' : pageContext.request.contextPath }" 
+       scope="application"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +46,7 @@
     <header class="mainHeader">
         <div class="contain">
             <div class="contain-small">
-                <a href="<c:url value= '/'/>" class="headA">하늘병원</a>
+                <a href="${ctx}" class="headA">하늘병원</a>
                 <button type="button" class="allMenu" aria-label="전체 메뉴 열기">
 					<span class="fa fa-bars" aria-hidden="true"></span>
 				</button>
@@ -66,26 +71,26 @@
                     </li>
 					<li><a href="#" class="hB-small">건강일지</a>
                         <ul>
-                            <li><a href="#">진단 입력하기</a></li>
+                            <li><a href="#">건강도우미</a></li>
                             <li><a href="#">혈당입력</a></li>
                             <li><a href="#">키/몸무게입력</a></li>
-                            <li><a href="#">조회 허락하기</a></li>
+                            <li><a href="#">진료도우미</a></li>
                         </ul>
                     </li>
 					<li><a href="#" class="hB-small">고객센터</a>
 						<ul>
 							<li><a href="#">공지사항</a></li>
 							<li><a href="#">자주하는 질문</a></li>
-							<li><a href="#">칭찬합니다</a></li>
-							<li><a href="#">불편사항</a></li>
+							<li><a href="#">커뮤니티</a></li>
+							<li><a href="#">내 상담내역</a></li>
 						</ul>
 					</li>
 				</ul>
 			</nav>
             <nav class="headD">
                 <ul>
-                    <li><a href="#">로그인</a></li>
-                    <li><a href="<c:url value='/member/register'/>">회원가입</a></li>
+                    <li><a href="${ctx}/member/login">로그인</a></li>
+                    <li><a href="${ctx}/member/register">회원가입</a></li>
                 </ul>
             </nav>
         </div>
