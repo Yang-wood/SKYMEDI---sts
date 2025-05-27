@@ -30,16 +30,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			
 			session.setAttribute(LOGIN, memInfo);
 			
-			Object dest = session.getAttribute("dest");
-			
-			if (dest == null) {
-				dest = "/board/list";
+			Object dest = session.getAttribute("dest");		
+			if (dest == null || dest == "null") {
+				dest = "/";
 			}
 			
 			log.info("LoginInterceptor Dest : " + dest);
 			
 			modelAndView.setViewName("redirect:" + (String)dest);
-//			response.sendRedirect("/");
+			response.sendRedirect("/");
 		}
 	}
 	

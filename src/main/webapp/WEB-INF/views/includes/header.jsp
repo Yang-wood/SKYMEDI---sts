@@ -77,9 +77,9 @@
                             <li><a href="#">진료도우미</a></li>
                         </ul>
                     </li>
-					<li><a href="#" class="hB-small">고객센터</a>
+					<li><a href="${ctx }/center/notice" class="hB-small">고객센터</a>
 						<ul>
-							<li><a href="#">공지사항</a></li>
+							<li><a href="${ctx }/center/notice">공지사항</a></li>
 							<li><a href="#">자주하는 질문</a></li>
 							<li><a href="#">커뮤니티</a></li>
 							<li><a href="#">내 상담내역</a></li>
@@ -89,8 +89,20 @@
 			</nav>
             <nav class="headD">
                 <ul>
-                    <li><a href="${ctx}/member/login">로그인</a></li>
-                    <li><a href="${ctx}/member/register">회원가입</a></li>
+                	<c:choose>
+                		<c:when test="${not empty sessionScope.login}">
+                			<!-- 로그인 상태 -->
+                			<li><a href="${ctx}/member/logout">로그아웃</a></li>
+	                    	<li><a href="#">마이페이지</a></li>
+                		</c:when>
+                		<c:otherwise>
+	                		<!-- 로그아웃 상태 -->
+	                		<li><a href="${ctx}/member/login">로그인</a></li>
+	                    	<li><a href="${ctx}/member/register">회원가입</a></li>
+                		</c:otherwise>
+                	</c:choose>
+                
+                    
                 </ul>
             </nav>
         </div>

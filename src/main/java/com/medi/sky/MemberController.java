@@ -13,10 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.medi.sky.domain.MemberDTO;
 import com.medi.sky.service.IMemberService;
@@ -31,21 +33,49 @@ public class MemberController {
 	private IMemberService service;
 	
 	@GetMapping("/login")
-	public void loginGet() throws Exception {
+	public void loginGet(@ModelAttribute("mDto") MemberDTO mDto) throws Exception {
 		log.info("login Get..........");
+		
+	}
+	
+	@PostMapping("/login")
+	public String loginPost(MemberDTO mDto, HttpSession session, 
+			Model model, RedirectAttributes rttr) throws Exception {
+		String rs = "";
+		MemberDTO memInfo = service.login(mDto);
+		log.info("memInfo ====> " + memInfo);
+		
+		if (memInfo == null) {
+			rttr.addFlashAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:/member/login";
+		}
+		
+		session.setAttribute("login", memInfo);
+		
+		return rs;
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		log.info("logout..............");
+		
+		//로그인 정보 삽입
+		Object obj = session.getAttribute("login");
+		
+		if (obj != null) {
+			//세션 정보 제거
+			session.removeAttribute("login");
+			//세션 객체 제거
+			session.invalidate();
+		}
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/register")
 	public void registerGet(MemberDTO mDto, HttpServletRequest request, HttpSession session) throws Exception {
 		log.info("register get..........");
 		
-		String referer = request.getHeader("Referer");
-		log.info("preHost :: " + referer);
-		
-		if (referer != null && !referer.contains("member/register")) {
-			session.setAttribute("dest", referer);
-			log.info("save Host : " + referer);
-		}
 	}
 	
 	@PostMapping("/register")
@@ -58,6 +88,8 @@ public class MemberController {
 		if (regInfo == 0) {
 			return "redirect:/member/register";
 		}
+		session.setAttribute("login", mDto);
+		
 		String dest = (String)session.getAttribute("dest");
 		if (dest == null || dest.equals("null")) {
 			dest = "/";

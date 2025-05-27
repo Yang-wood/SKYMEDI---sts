@@ -291,14 +291,14 @@ header:hover .headD a:hover {
   display: flex;
   text-align: center;
   justify-content: center;
-  height: 50vh;
-  max-height: 300px;
+  height: 30vh;
+  max-height: 100px;
   background-position: center;
-	background-size: cover;
+  background-size: cover;
   background-repeat: no-repeat;
   background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url(../img/sub_conA.png);
-	color: #fff;
-	color: var(--text-bright-color);
+  color: #fff;
+  color: var(--text-bright-color);
   position: relative;
 }
 .conA h1 {

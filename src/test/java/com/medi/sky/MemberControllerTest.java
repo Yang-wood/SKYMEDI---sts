@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.medi.sky.domain.MemberDTO;
 import com.medi.sky.mapper.MemberMapper;
+import com.medi.sky.service.IMemberService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -30,11 +31,12 @@ import lombok.extern.log4j.Log4j;
 public class MemberControllerTest {
 	@Autowired
 	private WebApplicationContext ctx;
+
+	@Autowired
+	private IMemberService service;
 	
 	private MockMvc mockMvc;
 	
-	@Autowired
-	private MemberMapper mapper;
 	
 	@Before
 	public void setup() {
@@ -62,24 +64,19 @@ public class MemberControllerTest {
 //		}
 //	}
 	
-	//테스트 회원 정보 반복 입력
+//	//테스트 회원 정보 반복 입력
 //	@Test
 //	public void testRepeatReg() throws Exception {
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//		MemberDTO mDto = new MemberDTO();
 //		
-//		IntStream.rangeClosed(2, 10).forEach(i -> {
+//		IntStream.rangeClosed(1, 10).forEach(i -> {
+//			MemberDTO mDto = new MemberDTO();
 //			
 //			try {
 //				mDto.setUsername("test" + i);
 //				mDto.setPassword("test" + i);
 //				mDto.setName("test" + i);
-//				String day = (i < 10) ? "0" + i : String.valueOf(i);
-//				Date date = sdf.parse("2000-01-" + day);
-//				mDto.setBirth_date(date);
-//				mDto.setPhone("0101234567" + i);
-//				mDto.setEmail("test" + i + "@test.com");
-//				int rs = mapper.insertMember(mDto);
+//				mDto.setEmail("test" + i + "@naver.com");
+//				int rs = service.register(mDto);
 //				if (rs > 0) {
 //					log.info("등록 성공");
 //				} else {
@@ -92,19 +89,19 @@ public class MemberControllerTest {
 //	}
 	
 	// 아이디 중복 테스트
-	@Test
-	public void testExistID() throws Exception {
-		String name = "test10";
-		
-		String rs = mockMvc.perform(MockMvcRequestBuilders.get("/member/existID")
-				.param("username", name))
-		.andReturn().getResponse().getContentAsString();
-		
-		if (rs.equals("1")) {
-			log.info("아이디 있음");
-		} else {
-			log.info("아이디 없음");
-		}
-	}
+//	@Test
+//	public void testExistID() throws Exception {
+//		String name = "user223";
+//		
+//		String rs = mockMvc.perform(MockMvcRequestBuilders.get("/member/existID")
+//				.param("username", name))
+//		.andReturn().getResponse().getContentAsString();
+//		
+//		if (rs.equals("1")) {
+//			log.info("아이디 있음");
+//		} else {
+//			log.info("아이디 없음");
+//		}
+//	}
 
 }

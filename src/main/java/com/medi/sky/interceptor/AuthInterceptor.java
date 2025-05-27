@@ -10,14 +10,16 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class AuthInterceptor extends HandlerInterceptorAdapter{
-	
+	//원래 사용자가 원하는 페이지의 정보를 취득
 	private void saveDest(HttpServletRequest request) {
+		//if (!request.getMethod().equals("GET")) return;
+		
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		
 		uri = uri.substring(contextPath.length());
 		
-		log.info("uri =======>" + uri);
+		log.info("uri ====>" + uri);
 		
 		String query = request.getQueryString();
 		
@@ -27,29 +29,26 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 			query = "?" + query;
 		}
 		
-		if (request.getMethod().equals("GET")) {
-			log.info("dest : " + (uri + query));
-			
+		if (!uri.startsWith("/member/login") || !uri.startsWith("/member/register")) {
+			log.info("dest saved in session: " + (uri + query));
 			request.getSession().setAttribute("dest", uri + query);
 		}
 	}
 	
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		
-		HttpSession session = request.getSession();
-		String contextPath = request.getContextPath();
-		saveDest(request);
-		//로그인세션이 아니면 로그인페이지로 이동
-		if (session.getAttribute("login") == null) {
-			log.info("current user is not logined");
+		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+				throws Exception {
+			HttpSession session = request.getSession();
+			String contextPath = request.getContextPath();
 			
-			response.sendRedirect(contextPath + "/member/login");
+			if (session.getAttribute("login") == null) {
+				log.info("current user is not logined");
+				saveDest(request);
+				response.sendRedirect(contextPath + "/member/login");
+				
+				return false;
+			}
 			
-			return false;
+			return true;
 		}
-		return true;
-		
-	}
 }

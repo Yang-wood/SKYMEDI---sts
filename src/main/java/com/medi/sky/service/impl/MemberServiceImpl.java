@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.medi.sky.domain.MemberDTO;
 import com.medi.sky.mapper.MemberMapper;
+import com.medi.sky.persistence.IMemberDAO;
 import com.medi.sky.service.IMemberService;
 
 import lombok.extern.log4j.Log4j;
@@ -15,17 +16,22 @@ import lombok.extern.log4j.Log4j;
 public class MemberServiceImpl implements IMemberService{
 	
 	@Autowired
-	private MemberMapper mapper;
+	private IMemberDAO dao;
 	
 	@Override
 	@Transactional
 	public int register(MemberDTO memberDto) {
-		return mapper.insertMember(memberDto);
+		return dao.insert(memberDto);
 	}
 
 	@Override
 	public int existID(String username) {
-		return mapper.existId(username);
+		return dao.selectId(username);
+	}
+
+	@Override
+	public MemberDTO login(MemberDTO memberDTO) {
+		return dao.login(memberDTO);
 	}
 
 	

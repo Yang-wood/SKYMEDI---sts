@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../includes/header.jsp" %>
-
+<link href="${ctx}/resources/css/register.css" rel="stylesheet">
 <section class="conA">
     <h1>회원가입</h1>
 </section>
@@ -8,7 +8,7 @@
 <section class="conB">
     <div class="register-container">
         <h2>하늘병원 회원가입</h2>
-        <form action="${ctx}/member/register" method="post">
+        <form action="${ctx}/member/register" method="post" autocomplete="off">
             <label>아이디</label>
             <input type="text" placeholder="아이디" id="username" name="username">
             <button type="button" id="checkIdBtn">중복확인</button>
@@ -27,11 +27,11 @@
             <label id="name_msg"></label><br>
 			
             <label>이메일</label>
-               <input type="text" id="femail" placeholder="이메일 아이디" name="femail">
+               <input type="text" id="femail" placeholder="" name="femail">
                <span>@</span>
-               <input type="text" id="lemail" placeholder="도메인" name="lemail">
+               <input type="text" id="lemail" placeholder="" name="lemail">
                <select id="emailSelect">
-                   <option value="">선택해주세요</option>
+                   <option value="none">선택해주세요</option>
                    <option value="naver.com">naver.com</option>
                    <option value="kakao.com">kakao.com</option>
                    <option value="gmail.com">gmail.com</option>

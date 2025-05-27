@@ -8,7 +8,7 @@ import org.junit.Test;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
-public class OracleConTest {
+public class OracleConnectionTest {
 	
 	private static final String DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";

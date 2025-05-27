@@ -29,11 +29,11 @@
 	<beans:bean id="authInterceptor" class="com.medi.sky.interceptor.AuthInterceptor"/>
 	<interceptors>
 		<interceptor>
-			<mapping path="/member/loginPost"/>
+			<mapping path="/member/login"/>
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
 		<interceptor>
-			<mapping path="/notice/register"/>
+			<mapping path="/center/notice"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>
