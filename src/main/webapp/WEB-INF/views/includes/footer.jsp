@@ -1,18 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="ctx" 
-       value="${pageContext.request.contextPath == '/' ? '' : pageContext.request.contextPath }" 
-       scope="application"/>
 <footer>
         <div class="contain">
             <div class="footA">
                 <div class="footB">
                     <ul>
-                        <li><a href="./hospital-info/welcome.html">병원소개</a></li>
-                        <li><a href="./hospital-info/welcome.html" class="line">오시는길</a></li>
-                        <li><a href="./information/practice.html">공지사항</a></li>
+                        <li><a href="#">병원소개</a></li>
+                        <li><a href="#" class="line">오시는길</a></li>
+                        <li><a href="#">공지사항</a></li>
                     </ul>
                 </div>
                 <p>광주광역시 서구 농성동</p>

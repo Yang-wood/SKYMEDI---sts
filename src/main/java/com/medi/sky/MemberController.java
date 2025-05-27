@@ -3,9 +3,13 @@ package com.medi.sky;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -32,19 +36,34 @@ public class MemberController {
 	}
 	
 	@GetMapping("/register")
-	public void registerGet(MemberDTO mDto) throws Exception {
+	public void registerGet(MemberDTO mDto, HttpServletRequest request, HttpSession session) throws Exception {
 		log.info("register get..........");
+		
+		String referer = request.getHeader("Referer");
+		log.info("preHost :: " + referer);
+		
+		if (referer != null && !referer.contains("member/register")) {
+			session.setAttribute("dest", referer);
+			log.info("save Host : " + referer);
+		}
 	}
 	
 	@PostMapping("/register")
-	public String registerPost(MemberDTO mDto) throws Exception {
+	public String registerPost(MemberDTO mDto, HttpSession session, Model model) throws Exception {
 		log.info("register post........");
 		log.info("register : " + mDto);
 		
 		log.info(mDto.toString());
-		service.register(mDto);
+		int regInfo = service.register(mDto);
+		if (regInfo == 0) {
+			return "redirect:/member/register";
+		}
+		String dest = (String)session.getAttribute("dest");
+		if (dest == null || dest.equals("null")) {
+			dest = "/";
+		}
 		
-		return "redirect:/sky/";
+		return "redirect:" + dest;
 	}
 	
 	@GetMapping("/existID")

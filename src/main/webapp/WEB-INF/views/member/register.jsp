@@ -8,7 +8,7 @@
 <section class="conB">
     <div class="register-container">
         <h2>하늘병원 회원가입</h2>
-        <form action="/member/register" method="post">
+        <form action="${ctx}/member/register" method="post">
             <label>아이디</label>
             <input type="text" placeholder="아이디" id="username" name="username">
             <button type="button" id="checkIdBtn">중복확인</button>

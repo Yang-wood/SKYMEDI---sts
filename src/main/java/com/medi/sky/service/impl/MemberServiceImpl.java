@@ -19,8 +19,8 @@ public class MemberServiceImpl implements IMemberService{
 	
 	@Override
 	@Transactional
-	public void register(MemberDTO memberDto) {
-		mapper.insertMember(memberDto);
+	public int register(MemberDTO memberDto) {
+		return mapper.insertMember(memberDto);
 	}
 
 	@Override
