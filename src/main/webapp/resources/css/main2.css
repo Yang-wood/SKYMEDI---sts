@@ -1,0 +1,119 @@
+@charset "UTF-8";
+
+body {
+      padding-top: 130px;
+    }
+
+header.mainHeader {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1030;
+}
+
+nav.main-header {
+  background-color: rgb(240, 255, 255);
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headA {
+	margin-left: 400px;
+}
+
+.headA a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000;
+  text-decoration: none;
+}
+
+.headB {
+	margin-right: 200px;
+}
+
+.headB ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+.headB a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+}
+
+nav.sub-header {
+  background-color: #1A2B4C;
+  padding: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+nav.sub-header > div {
+  position: relative;
+}
+
+nav.sub-header a.hB-small {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+}
+
+nav.sub-header li {
+  list-style: none;
+}
+
+nav.sub-header li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 0.3rem 1rem;
+  background-color: #2C3E50;
+}
+
+nav.sub-header li a:hover {
+  background-color: #34495E;
+}
+
+nav.sub-header div:hover ul {
+  display: block;
+}
+
+nav.sub-header ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background-color: #2C3E50;
+  border-radius: 0.25rem;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 999;
+}
+
+.allMenu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #000;
+  display: none; /* 필요 시 모바일용 토글 버튼으로 */
+}
+
+body {
+  padding-top: 120px; /* 헤더 공간 확보 */
+}

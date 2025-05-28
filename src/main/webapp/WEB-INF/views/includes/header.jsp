@@ -111,6 +111,60 @@
 		        alert('${logoutMsg}');
 		    </script>
 		</c:if>
+		
+		<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modallabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<h1 class="modal-title fs-5" id="modallabel">로그인 방식을 선택하세요</h1>
+						<a class="btn btn-primary" href="${ctx}/member/login" role="button">회원</a>
+						<button class="btn btn-primary" data-bs-target="#modal2" data-bs-toggle="modal">비회원</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="modal2" aria-hidden="true" aria-labelledby="modallabel2" tabindex="-1">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="modallabel2">비회원 로그인</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form action="${ctx}/consult/list">
+							<div class="mb-3">
+								<label for="email" class="col-form-label">이메일</label>
+           						<input type="text" class="form-control" id="femail" name="femail">
+           						<span>@</span>
+						        <input type="text" class="form-control" id="lemail" name="lemail">
+					               <select id="emailSelect">
+					                   <option value="none">선택해주세요</option>
+					                   <option value="naver.com">naver.com</option>
+					                   <option value="kakao.com">kakao.com</option>
+					                   <option value="gmail.com">gmail.com</option>
+					                   <option value="daum.net">daum.net</option>
+					                   <option value="self">직접 입력</option>
+					               </select>
+						        <label id="email_msg"></label><br>
+						        <input type="hidden" name="g_email" id="email">
+							</div>
+							<div>
+								<label for="g_pw" class="col-form-label">비밀번호</label>
+           						<input type="password" class="form-control" id="g_pw" name="g_password">
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+						<button type="submit" class="btn btn-primary"></button>
+					</div>
+				</div>
+			</div>
+		</div>
 </header>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 

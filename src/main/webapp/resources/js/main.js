@@ -1,8 +1,10 @@
 /**
  * 
  */
- 
- function checkAllMenuVisible() {
+
+
+
+function checkAllMenuVisible() {
 	const headB = $(".headB");
 	const headD = $(".headD");
 

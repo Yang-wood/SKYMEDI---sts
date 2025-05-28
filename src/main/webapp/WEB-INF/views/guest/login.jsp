@@ -78,7 +78,7 @@ $(document).ready(function() {
                <input type="hidden" name="g_email" id="email">
         <label>비밀번호</label>
         <input type="password" name="g_password"><br><br>
-
+		
         <button type="submit">등록</button>
     </form>
 </body>

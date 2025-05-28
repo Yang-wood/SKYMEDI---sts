@@ -26,7 +26,7 @@ public class ConsultController {
 	
 	@GetMapping("/check")
 	public String chkGet(HttpSession session) {
-		log.info("ckcek.........");
+		log.info("check.........");
 		
 		MemberDTO login = (MemberDTO)session.getAttribute("login");
 		if (login != null) {
@@ -58,8 +58,11 @@ public class ConsultController {
 			cDto.setGno(gDto.getGno());
 			cDto.setG_email(gDto.getG_email());
 		}
-		
-		service.register(cDto);
+		try {
+			service.register(cDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return "redirect:/";
 	}
