@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberDTO {
-	private int mno;
+	private Integer mno;
 	private String username;
 	private String password;
 	private String name;

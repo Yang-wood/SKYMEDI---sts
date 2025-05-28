@@ -33,7 +33,7 @@
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
 		<interceptor>
-			<mapping path="/center/notice"/>
+			<mapping path="/consult/list"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>

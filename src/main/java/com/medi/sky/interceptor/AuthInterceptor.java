@@ -12,7 +12,6 @@ import lombok.extern.log4j.Log4j;
 public class AuthInterceptor extends HandlerInterceptorAdapter{
 	//원래 사용자가 원하는 페이지의 정보를 취득
 	private void saveDest(HttpServletRequest request) {
-		//if (!request.getMethod().equals("GET")) return;
 		
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
@@ -29,8 +28,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 			query = "?" + query;
 		}
 		
-		if (!uri.startsWith("/member/login") || !uri.startsWith("/member/register")) {
-			log.info("dest saved in session: " + (uri + query));
+		if (request.getMethod().equals("GET")) {
+			log.info("dest : " + (uri + query));
+			
 			request.getSession().setAttribute("dest", uri + query);
 		}
 	}

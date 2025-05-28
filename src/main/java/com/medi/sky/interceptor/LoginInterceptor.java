@@ -31,14 +31,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			session.setAttribute(LOGIN, memInfo);
 			
 			Object dest = session.getAttribute("dest");		
-			if (dest == null || dest == "null") {
+			if (dest == null || dest.equals("null")) {
 				dest = "/";
 			}
 			
 			log.info("LoginInterceptor Dest : " + dest);
 			
 			modelAndView.setViewName("redirect:" + (String)dest);
-			response.sendRedirect("/");
 		}
 	}
 	

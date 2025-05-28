@@ -9,14 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConsultDTO {
-	private Integer cno;
-	private Integer mno;
+public class GuestDTO {
 	private Integer gno;
-	private String username;
 	private String g_email;
-	private String title;
-	private String content;
+	private String g_password;
 	private Date reg_date;
-	private String status;
 }

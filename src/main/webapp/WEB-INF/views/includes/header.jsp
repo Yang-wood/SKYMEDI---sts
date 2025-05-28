@@ -2,8 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctx" 
-       value="${pageContext.request.contextPath == '/' ? '' : pageContext.request.contextPath }" 
+       value="${pageContext.request.contextPath == '/' ? '' : pageContext.request.contextPath }"
        scope="application"/>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,22 +17,22 @@
     <title>하늘병원</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ctx}/resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="/resources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="${ctx}/resources/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
 
     <!-- DataTables CSS -->
-    <link href="/resources/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="${ctx}/resources/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
-    <link href="/resources/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+    <link href="${ctx}/resources/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/resources/dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="${ctx}/resources/dist/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="${ctx}/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	
 	<!-- Self CSS -->
 	<link href="${ctx}/resources/css/main.css" rel="stylesheet">
@@ -64,7 +65,7 @@
 					<li><a href="#" class="hB-small">진료안내</a>
                         <ul>
                             <li><a href="#">진료현황</a></li>
-                            <li><a href="#">상담문의</a></li>
+                            <li><a href="${ctx}/consult/check">상담문의</a></li>
                             <li><a href="#">예약안내</a></li>
                             <li><a href="#">비급여안내</a></li>
                         </ul>
@@ -77,12 +78,12 @@
                             <li><a href="#">진료도우미</a></li>
                         </ul>
                     </li>
-					<li><a href="${ctx }/center/notice" class="hB-small">고객센터</a>
+					<li><a href="${ctx}/center/notice" class="hB-small">고객센터</a>
 						<ul>
-							<li><a href="${ctx }/center/notice">공지사항</a></li>
+							<li><a href="${ctx}/center/notice">공지사항</a></li>
 							<li><a href="#">자주하는 질문</a></li>
 							<li><a href="#">커뮤니티</a></li>
-							<li><a href="#">내 상담내역</a></li>
+							<li><a href="${ctx}/consult/list">내 상담내역</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -101,10 +102,15 @@
 	                    	<li><a href="${ctx}/member/register">회원가입</a></li>
                 		</c:otherwise>
                 	</c:choose>
-                
-                    
                 </ul>
             </nav>
         </div>
-    </header>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- 로그아웃 메세지 -->
+        <c:if test="${not empty logoutMsg}">
+        	<script>
+		        alert('${logoutMsg}');
+		    </script>
+		</c:if>
+</header>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+

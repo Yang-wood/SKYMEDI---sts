@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medi.sky.consultMapper">
+	<insert id="register">
+		INSERT INTO consult
+		(cno, mno, gno, username, g_email, title, content, reg_date)
+		VALUES
+		(consult_seq.NEXTVAL, #{mno, jdbcType=INTEGER}, 
+		#{gno, jdbcType=INTEGER}, #{username, jdbcType=VARCHAR}, 
+		#{g_email, jdbcType=VARCHAR}, #{title}, #{content}, sysdate)
+	</insert>
+</mapper>
