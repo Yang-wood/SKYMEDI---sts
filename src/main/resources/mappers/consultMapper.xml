@@ -11,4 +11,5 @@
 		#{gno, jdbcType=INTEGER}, #{username, jdbcType=VARCHAR}, 
 		#{g_email, jdbcType=VARCHAR}, #{title}, #{content}, sysdate)
 	</insert>
+	
 </mapper>
