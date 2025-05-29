@@ -16,12 +16,12 @@ public class GuestServiceImpl implements IGuestService {
 	private IGuestDAO dao;
 	
 	@Override
-	public int register(GuestDTO gDto) {
+	public int register(GuestDTO gDto) throws Exception {
 		return dao.insert(gDto);
 	}
 
 	@Override
-	public GuestDTO findGuest(GuestDTO gDto) {
+	public GuestDTO findGuest(GuestDTO gDto) throws Exception {
 		return dao.findGuest(gDto);
 	}
 

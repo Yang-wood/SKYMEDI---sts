@@ -15,12 +15,12 @@ public class GuestDAOImpl implements IGuestDAO {
 	private static final String namespace = "com.medi.sky.guestMapper.";
 	
 	@Override
-	public int insert(GuestDTO gDto) {
+	public int insert(GuestDTO gDto) throws Exception {
 		return sqlsession.insert(namespace + "insert", gDto);
 	}
 
 	@Override
-	public GuestDTO findGuest(GuestDTO gDto) {
+	public GuestDTO findGuest(GuestDTO gDto) throws Exception {
 		return sqlsession.selectOne(namespace + "findGuest", gDto);
 	}
 

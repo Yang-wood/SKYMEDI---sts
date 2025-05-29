@@ -1,5 +1,8 @@
 package com.medi.sky;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +26,28 @@ public class GuestController {
 	
 	
 	@GetMapping("/login")
-	public void checkGuest() {
+	public void checkGuest() throws Exception {
 		log.info("Guest Login........");
 	};
 	
-	@PostMapping("/login")
+	@PostMapping("/loginPost")
 	public String checkGuest(GuestDTO gDto, HttpSession session) {
-		GuestDTO guest = service.findGuest(gDto);
-		
-		if (guest == null) {
-			int rs = service.register(gDto);
-			if (rs > 0) {
-				log.info("guest 등록 성공");
-			} else {
-				log.info("guest 등록 실패");
+		log.info("Guest register........");
+		try {
+			GuestDTO guest = service.findGuest(gDto);
+			if (guest == null) {
+				int rs = service.register(gDto);
+				if (rs > 0) {
+					log.info("guest 등록 성공");
+				} else {
+					log.info("guest 등록 실패");
+				}
+				guest = service.findGuest(gDto);
+				session.setAttribute("guestInfo", guest);
 			}
-			guest = service.findGuest(gDto);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		session.setAttribute("guestInfo", guest);
-		
 		return "redirect:/consult/writer";
 	}
 }

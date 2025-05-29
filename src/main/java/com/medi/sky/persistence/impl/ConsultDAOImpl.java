@@ -11,14 +11,14 @@ import com.medi.sky.domain.Criteria;
 import com.medi.sky.persistence.IConsultDAO;
 
 @Repository
-public class ConsultDAOImpl implements IConsultDAO{
+public class ConsultDAOImpl implements IConsultDAO {
 	@Autowired
 	private SqlSession session;
 	
 	private static final String namespace = "com.medi.sky.consultMapper.";
 	
 	@Override
-	public int register(ConsultDTO cDto) {
+	public int register(ConsultDTO cDto) throws Exception {
 		return session.insert(namespace + "register", cDto);
 	}
 

@@ -33,7 +33,7 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 		
-		return "main";
+		return "main3";
 	}
 	
 }

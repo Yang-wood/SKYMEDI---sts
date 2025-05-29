@@ -41,17 +41,21 @@ public class MemberController {
 	@PostMapping("/login")
 	public String loginPost(MemberDTO mDto, HttpSession session, 
 			Model model, RedirectAttributes rttr) throws Exception {
-		MemberDTO memInfo = service.login(mDto);
-		log.info("memInfo ====> " + memInfo);
-		
-		if (memInfo == null) {
-			rttr.addFlashAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-			return "redirect:/member/login";
+		try {
+			MemberDTO memInfo = service.login(mDto);
+			log.info("memInfo ====> " + memInfo);
+			
+			if (memInfo == null) {
+				rttr.addFlashAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+				return "redirect:/member/login";
+			}
+			
+			model.addAttribute("memInfo", memInfo);
+			Object dest = session.getAttribute("dest");
+			log.info("dest : " + dest);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		model.addAttribute("memInfo", memInfo);
-		Object dest = session.getAttribute("dest");
-		log.info("dest : " + dest);
 		return "/member/loginSuccess";
 	}
 	
@@ -59,42 +63,48 @@ public class MemberController {
 	public String logout(HttpSession session, RedirectAttributes rttr) {
 		log.info("logout..............");
 		
-		//로그인 정보 삽입
-		Object obj = session.getAttribute("login");
-		
-		if (obj != null) {
-			rttr.addFlashAttribute("logoutMsg", "로그아웃되었습니다.");
-			//세션 정보 제거
-			session.removeAttribute("login");
-			//세션 객체 제거
-			session.invalidate();
+		try {
+			//로그인 정보 삽입
+			Object obj = session.getAttribute("login");
+			
+			if (obj != null) {
+				rttr.addFlashAttribute("logoutMsg", "로그아웃되었습니다.");
+				//세션 정보 제거
+				session.removeAttribute("login");
+				//세션 객체 제거
+				session.invalidate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return "redirect:/";
 	}
 	
 	@GetMapping("/register")
-	public void registerGet(MemberDTO mDto, HttpServletRequest request, HttpSession session) throws Exception {
+	public void registerGet(MemberDTO mDto, HttpServletRequest request, HttpSession session) {
 		log.info("register get..........");
 		
 	}
 	
 	@PostMapping("/register")
-	public String registerPost(MemberDTO mDto, HttpSession session, Model model) throws Exception {
-		log.info("register post........");
-		log.info("register : " + mDto);
-		
-		log.info(mDto.toString());
-		int regInfo = service.register(mDto);
-		if (regInfo == 0) {
-			return "redirect:/member/register";
+	public String registerPost(MemberDTO mDto, HttpSession session, Model model) {
+		try {
+			log.info("register post........");
+			log.info("register : " + mDto);
+			
+			log.info(mDto.toString());
+			int regInfo = service.register(mDto);
+			if (regInfo == 0) {
+				return "redirect:/member/register";
+			}
+			session.setAttribute("login", mDto);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		session.setAttribute("login", mDto);
-		
 		String dest = (String)session.getAttribute("dest");
 		if (dest == null || dest.equals("null")) {
 			dest = "/";
 		}
-		
 		return "redirect:" + dest;
 	}
 	

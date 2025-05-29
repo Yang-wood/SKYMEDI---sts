@@ -1,0 +1,98 @@
+.register-container {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+.register-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-container label {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.register-container input[type="text"],
+.register-container input[type="password"],
+.register-container select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.id-input-group {
+  display: flex;
+  gap: 8px; /* input과 버튼 사이 간격 */
+  align-items: center;
+  width: 100%;
+}
+
+#username {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+#checkIdBtn {
+  padding: 10px 12px;
+  font-size: 13px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap; /* 버튼 줄바꿈 방지 */
+}
+
+#checkIdBtn:hover {
+  background-color: #084298;
+}
+
+#emailSelect {
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.register-container label[id$="_msg"] {
+  color: red;
+  font-size: 13px;
+}
+
+.register-container button[type="submit"],
+.register-container button[type="button"] {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.register-container button[type="submit"] {
+  background-color: #198754;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.register-container button[type="submit"]:hover {
+  background-color: #146c43;
+}
+
+.register-container button[type="button"]:last-of-type {
+  background-color: #6c757d;
+  color: white;
+}
+
+.register-container button[type="button"]:last-of-type:hover {
+  background-color: #5a6268;
+}

@@ -53,9 +53,6 @@
 
         </div>
     </footer>
-    <!-- jQuery -->
-    <!-- <script src="/resources/vendor/jquery/jquery.min.js"></script> -->
-
     <!-- Bootstrap Core JavaScript -->
     <script src="${ctx}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 
@@ -80,8 +77,8 @@
 	        .attr("class","sidebar-nav navbar-collapse collapse")
 	        .attr("aria-expanded","false")
 	        .attr("style","height:1px");
+	       	
 	    });
     </script>
-    <script src="<c:url value='/resources/js/main.js'/>"></script>
 </body>
 </html>

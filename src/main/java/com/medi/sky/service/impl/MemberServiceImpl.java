@@ -20,17 +20,17 @@ public class MemberServiceImpl implements IMemberService{
 	
 	@Override
 	@Transactional
-	public int register(MemberDTO memberDto) {
+	public int register(MemberDTO memberDto) throws Exception {
 		return dao.insert(memberDto);
 	}
 
 	@Override
-	public int existID(String username) {
+	public int existID(String username) throws Exception {
 		return dao.selectId(username);
 	}
 
 	@Override
-	public MemberDTO login(MemberDTO memberDTO) {
+	public MemberDTO login(MemberDTO memberDTO) throws Exception {
 		return dao.login(memberDTO);
 	}
 

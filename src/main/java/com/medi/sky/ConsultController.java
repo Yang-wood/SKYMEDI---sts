@@ -27,10 +27,13 @@ public class ConsultController {
 	@GetMapping("/check")
 	public String chkGet(HttpSession session) {
 		log.info("check.........");
-		
-		MemberDTO login = (MemberDTO)session.getAttribute("login");
-		if (login != null) {
-			return "redirect:/consult/writer";
+		try {
+			MemberDTO login = (MemberDTO)session.getAttribute("login");
+			if (login != null) {
+				return "redirect:/consult/writer";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return "/consult/check";

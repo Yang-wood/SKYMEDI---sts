@@ -19,9 +19,8 @@ public class ConsultServiceImpl implements IConsultService{
 	private IConsultDAO dao;
 	
 	@Override
-	public int register(ConsultDTO cDto) {
-		log.info("register.........");
-		return dao.register(cDto);
+	public void register(ConsultDTO cDto) throws Exception {
+		dao.register(cDto);
 	}
 
 	@Override

@@ -43,21 +43,7 @@
     <![endif]-->
 	<!-- Bootstrap CSS -->
   	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"> -->
-  	<link rel="stylesheet" href="${ctx }/resources/css/main.css2">
-<style type="text/css">
-
-.modal-backdrop {
-  z-index: 1040 !important;
-}
-
-.modal {
-  z-index: 1050 !important;
-}
-
-.modal-content {
-  z-index: 1060 !important;
-}
-</style>
+  	<link rel="stylesheet" href="${ctx }/resources/css/main3.css">
 </head>
 <body>
     <header class="mainHeader">
@@ -197,96 +183,3 @@
 	</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-	//이메일 앞 주소
-	$("#femail").on("blur", function () {
-	    const id = $(this).val().trim();
-	    const idRegex = /^[a-z0-9]{4,16}$/;
-	    const msg = $("#email_msg");
-	
-	    if (id === "") {
-	        msg.text("이메일 주소를 입력해주세요.").css("color", "red");
-	    } else if (!idRegex.test(id)) {
-	        msg.text("이메일 주소는 4~16자의 영문 소문자와 숫자만 가능합니다.").css("color", "red");
-	    } else {
-	        msg.text("");
-	    }
-	});
-	
-	// 이메일 뒷 주소
-	const selected = $("#emailSelect").val();
-	const lemail = $("#lemail");
-	if(selected === "none") {
-		lemail.val("");
-		lemail.prop("readonly", true);
-	}
-	$("#emailSelect").on("change", function() {
-		const selected = $(this).val();
-		const lemail = $("#lemail");
-		
-		if (selected === "none") {
-	    	lemail.val("");
-	    	lemail.prop("readonly", true);
-		} else if (selected === "self") {
-	    	lemail.val("");
-	    	lemail.prop("readonly", false);
-		} else {
-	    	lemail.val(selected);
-	    	lemail.prop("readonly", true);
-		}
-	});
-	$("form").on("submit", function() {
-		// 최종 이메일 hidden에 입력
-		const femail = $("#femail").val().trim();
-        const lemail = $("#lemail").val().trim();
-        const emailSelect = $("#emailSelect").val();
-	    $("#email").val(femail + "@" + lemail);
-	});
-	
-	// 모달 기능 구현
-	$("#modalShow").on("click", function() {
-		targetUrl = $(this).data("target-url");
-		$("#modal1").modal("show");
-	});
-	
-	$('#guestBtn').on('click', function(){
-		openModal2 = true;
-		$('#modal1').modal('hide');
-	});
-	
-	$("#modal1").on("hidden.bs.modal", function() {
-	    if (openModal2) {
-			$('#modal2').modal('show');
-			openModal2 = false;
-		}
-		
-	});
-	
-	$(".close").on("click", function() {
-		openModal2 = false;
-		$("#modal2").modal("hide");
-	})
-	
-
-});
-
-</script>
-<!-- Bootstrap Core JavaScript -->
-<script src="${ctx}/resources/vendor/bootstrap/js/bootstrap.min.js"></script>
-
-<!-- Metis Menu Plugin JavaScript -->
-<script src="${ctx}/resources/vendor/metisMenu/metisMenu.min.js"></script>
-
-<!-- DataTables JavaScript -->
-<script src="${ctx}/resources/vendor/datatables/js/jquery.dataTables.min.js"></script>
-<script src="${ctx}/resources/vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
-<script src="${ctx}/resources/vendor/datatables-responsive/dataTables.responsive.js"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="${ctx}/resources/dist/js/sb-admin-2.js"></script>
-
-<!-- Page-Level Demo Scripts - Tables - Use for reference -->
-</body>
-</html>

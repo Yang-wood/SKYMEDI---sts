@@ -1,12 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ include file="../includes/header.jsp" %>
+<%@ include file="../includes/header2.jsp" %>
 
 <link href="${ctx}/resources/css/login.css" rel="stylesheet">
 
 <section class="conA">
-        <h1>로그인</h1>
 </section>
 <section class="conB">
     <div class="login-container">
@@ -19,7 +16,7 @@
         <div class="extra-links">
             <a href="#">아이디 찾기</a> |
             <a href="#">비밀번호 찾기</a> |
-            <a href="<c:url value='/member/register' />">회원가입</a>
+            <a href="${ctx }/member/register">회원가입</a>
         </div>
     </div>
 </section>
@@ -30,4 +27,4 @@
     </script>
 </c:if>
 
-<%@ include file="../includes/footer.jsp"  %>
+<%@ include file="../includes/footer2.jsp"  %>

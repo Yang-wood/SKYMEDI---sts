@@ -1,15 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="ctx" 
-       value="${pageContext.request.contextPath == '/' ? '' : pageContext.request.contextPath }" 
-       scope="application"/>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<%@ include file="../includes/header.jsp" %>
+	<section class="conA">
+	
+	</section>
+	<section class="conB">
+	    <form action="${ctx}/guest/login" method="post">
+	        <label>이메일</label>
+	               <input type="text" id="femail" placeholder="" name="femail">
+	               <span>@</span>
+	               <input type="text" id="lemail" placeholder="" name="lemail">
+	               <select id="emailSelect">
+	                   <option value="none">선택해주세요</option>
+	                   <option value="naver.com">naver.com</option>
+	                   <option value="kakao.com">kakao.com</option>
+	                   <option value="gmail.com">gmail.com</option>
+	                   <option value="daum.net">daum.net</option>
+	                   <option value="self">직접 입력</option>
+	               </select>
+	               <label id="email_msg"></label><br>
+	               <input type="hidden" name="g_email" id="email">
+	        <label>비밀번호</label>
+	        <input type="password" name="g_password"><br><br>
+			
+	        <button type="submit">등록</button>
+	    </form>
+	</section>
+
 <script>
 $(document).ready(function() {
 	//이메일 앞 주소
@@ -58,28 +76,4 @@ $(document).ready(function() {
 	});
 });
 </script>
-
-</head>
-<body>
-    <form action="${ctx}/guest/login" method="post">
-        <label>이메일</label>
-               <input type="text" id="femail" placeholder="" name="femail">
-               <span>@</span>
-               <input type="text" id="lemail" placeholder="" name="lemail">
-               <select id="emailSelect">
-                   <option value="none">선택해주세요</option>
-                   <option value="naver.com">naver.com</option>
-                   <option value="kakao.com">kakao.com</option>
-                   <option value="gmail.com">gmail.com</option>
-                   <option value="daum.net">daum.net</option>
-                   <option value="self">직접 입력</option>
-               </select>
-               <label id="email_msg"></label><br>
-               <input type="hidden" name="g_email" id="email">
-        <label>비밀번호</label>
-        <input type="password" name="g_password"><br><br>
-		
-        <button type="submit">등록</button>
-    </form>
-</body>
-</html>
+<%@ include file="../includes/footer.jsp"  %>

@@ -42,6 +42,19 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style type="text/css">
+.modal-backdrop {
+  z-index: 1040 !important;
+}
+
+.modal {
+  z-index: 1050 !important;
+}
+
+.modal-content {
+  z-index: 1060 !important;
+}
+</style>
 </head>
 <body>
     <header class="mainHeader">
@@ -65,7 +78,14 @@
 					<li><a href="#" class="hB-small">진료안내</a>
                         <ul>
                             <li><a href="#">진료현황</a></li>
-                            <li><a href="${ctx}/consult/check">상담문의</a></li>
+                            <c:choose>
+                    			<c:when test="${not empty sessionScope.login}">
+                    				<li><a href="${ctx}/consult/writer">상담문의</a></li>
+                    			</c:when>
+                    			<c:otherwise>
+                    				<li><a href="#" id="writerModal">상담문의</a></li>
+                    			</c:otherwise>
+                    		</c:choose>
                             <li><a href="#">예약안내</a></li>
                             <li><a href="#">비급여안내</a></li>
                         </ul>
@@ -83,7 +103,7 @@
 							<li><a href="${ctx}/center/notice">공지사항</a></li>
 							<li><a href="#">자주하는 질문</a></li>
 							<li><a href="#">커뮤니티</a></li>
-							<li><a href="${ctx}/consult/list">내 상담내역</a></li>
+							<li><a href="${ctx}/consult/check">내 상담내역</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -111,35 +131,40 @@
 		        alert('${logoutMsg}');
 		    </script>
 		</c:if>
-		
-		<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modallabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-        				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<h1 class="modal-title fs-5" id="modallabel">로그인 방식을 선택하세요</h1>
-						<a class="btn btn-primary" href="${ctx}/member/login" role="button">회원</a>
-						<button class="btn btn-primary" data-bs-target="#modal2" data-bs-toggle="modal">비회원</button>
-					</div>
-				</div>
+</header>
+<div class="modal fade" id="modal1" 
+ 	data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" 
+ 	aria-labelledby="modallabel" aria-hidden="true" >
+	<div class="modal-dialog">
+		<div class="modal-content" style="z-index: 1050;">
+			<div class="modal-header">
+      				<button type="button" class="close" data-dismiss="modal">&times;</button>
+      				<h4 class="modal-title" id="modallabel">로그인 방식을 선택하세요</h4>
+			</div>
+			<div class="modal-body">
+				<a class="btn btn-primary" href="${ctx}/member/login" role="button">회원</a>
+				<button class="btn btn-primary" id="guestBtn" data-dismiss="modal" data-toggle="modal" data-target="#modal2">비회원</button>
 			</div>
 		</div>
-		<div class="modal fade" id="modal2" aria-hidden="true" aria-labelledby="modallabel2" tabindex="-1">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="modallabel2">비회원 로그인</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<form action="${ctx}/consult/list">
-							<div class="mb-3">
-								<label for="email" class="col-form-label">이메일</label>
-           						<input type="text" class="form-control" id="femail" name="femail">
-           						<span>@</span>
-						        <input type="text" class="form-control" id="lemail" name="lemail">
+	</div>
+</div>
+<div class="modal fade" id="modal2" aria-hidden="true" 
+	data-backdrop="static" data-keyboard="false"
+	aria-labelledby="modallabel2" tabindex="-1" role="dialog">
+	<div class="modal-dialog" style="margin-top: 100px;">
+		<div class="modal-content">
+		<form action="${ctx}/guest/loginPost" method="post">
+			<div class="modal-header">
+				<h1 class="modal-title" id="modallabel2">비회원 로그인</h1>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="email" class="control-label">이메일</label>
+        						<div class="form-inline">
+	         						<input type="text" class="form-control" id="femail" name="femail" style="width: 30%;">
+	         						<span>@</span>
+					        		<input type="text" class="form-control" id="lemail" name="lemail" style="width: 30%;">
 					               <select id="emailSelect">
 					                   <option value="none">선택해주세요</option>
 					                   <option value="naver.com">naver.com</option>
@@ -148,23 +173,128 @@
 					                   <option value="daum.net">daum.net</option>
 					                   <option value="self">직접 입력</option>
 					               </select>
-						        <label id="email_msg"></label><br>
-						        <input type="hidden" name="g_email" id="email">
-							</div>
-							<div>
-								<label for="g_pw" class="col-form-label">비밀번호</label>
-           						<input type="password" class="form-control" id="g_pw" name="g_password">
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="submit" class="btn btn-primary"></button>
-					</div>
+        						</div>
+			        <label id="email_msg"></label><br>
+			        <input type="hidden" name="g_email" id="email">
+				</div>
+				<div class="form-group">
+					<label for="g_pw" class="control-label">비밀번호</label>
+        						<input type="password" class="form-control" id="g_pw" name="g_password">
 				</div>
 			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				<button type="submit" class="btn btn-primary" id="gusetloginBtn">로그인</button>
+			</div>
+		</form>
 		</div>
-</header>
-
+	</div>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	//모바일 화면용 버튼 구현
+	$(".allMenu").click(function(){
+		const headB = $(".headB");
+		const headD = $(".headD");
 
+		if (headB.is(":visible")) {
+			headB.stop(true, true).slideUp(300);
+			headD.stop(true, true).fadeIn(200);
+		} else {
+			headB.stop(true, true).slideDown(300);
+			headD.stop(true, true).fadeOut(200);
+		}
+	});
+	
+	// 스크롤 시 헤더 처리
+	function handleScroll() {
+		const header = $(".mainHeader");
+		const headB = $(".headB");
+		const headD = $(".headD");
+
+		if ($(window).scrollTop() > 10) {
+			header.addClass("scrolled");
+			setTimeout(function() {
+				header.removeClass("scrolled");
+			}, 1000);
+		} else {
+			header.removeClass("scrolled");
+		}
+
+		// 스크롤 시 메뉴 닫기 (모바일)
+		if (window.innerWidth <= 968 && headB.is(":visible")) {
+			headB.stop(true, true).slideUp(500);
+			headD.stop(true, true).fadeIn(500);
+		}
+	}
+	
+	$(window).on("scroll", handleScroll);
+	
+	$(window).on('resize', function(){
+		checkAllMenuVisible();
+	});
+	checkAllMenuVisible();
+	handleScroll();
+	
+	//이메일 앞 주소
+	$("#femail").on("blur", function () {
+	    const id = $(this).val().trim();
+	    const idRegex = /^[a-z0-9]{4,16}$/;
+	    const msg = $("#email_msg");
+	
+	    if (id === "") {
+	        msg.text("이메일 주소를 입력해주세요.").css("color", "red");
+	    } else if (!idRegex.test(id)) {
+	        msg.text("이메일 주소는 4~16자의 영문 소문자와 숫자만 가능합니다.").css("color", "red");
+	    } else {
+	        msg.text("");
+	    }
+	});
+	
+	// 이메일 뒷 주소
+	const selected = $("#emailSelect").val();
+	const lemail = $("#lemail");
+	if(selected === "none") {
+		lemail.val("");
+		lemail.prop("readonly", true);
+	}
+	$("#emailSelect").on("change", function() {
+		const selected = $(this).val();
+		const lemail = $("#lemail");
+		
+		if (selected === "none") {
+	    	lemail.val("");
+	    	lemail.prop("readonly", true);
+		} else if (selected === "self") {
+	    	lemail.val("");
+	    	lemail.prop("readonly", false);
+		} else {
+	    	lemail.val(selected);
+	    	lemail.prop("readonly", true);
+		}
+	});
+	$("form").on("submit", function() {
+		// 최종 이메일 hidden에 입력
+		const femail = $("#femail").val().trim();
+        const lemail = $("#lemail").val().trim();
+        const emailSelect = $("#emailSelect").val();
+	    $("#email").val(femail + "@" + lemail);
+	});
+	
+	// 모달 기능 구현
+	$("#writerModal").on("click", function() {
+		targetUrl = $(this).data("target-url");
+		$("#modal1").modal("show");
+	});
+	
+	$('#guestBtn').on('click', function(){
+	    $('#modal1').modal('hide');
+	});
+	
+	$("#modal1").on("hidden.bs.modal", function() {
+	    $('#modal2').modal('show');
+	});
+});
+</script>

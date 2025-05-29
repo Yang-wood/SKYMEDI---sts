@@ -16,17 +16,17 @@ public class MemberDAOImpl implements IMemberDAO{
 	private static final String namespace = "com.medi.sky.memberMapper.";
 
 	@Override
-	public int insert(MemberDTO mDto) {
+	public int insert(MemberDTO mDto) throws Exception {
 		return sqlsession.insert(namespace + "insert", mDto);
 	}
 
 	@Override
-	public int selectId(String username) {
+	public int selectId(String username) throws Exception {
 		return sqlsession.selectOne(namespace + "selectId", username);
 	}
 
 	@Override
-	public MemberDTO login(MemberDTO mDto) {
+	public MemberDTO login(MemberDTO mDto) throws Exception {
 		return sqlsession.selectOne(namespace + "login", mDto);
 	}
 	

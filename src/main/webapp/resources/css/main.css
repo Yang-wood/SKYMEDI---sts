@@ -238,7 +238,7 @@ header:hover .headD a:hover {
   position: fixed;
   top: 50px;
   left: 150px;
-  z-index: 9999;
+  z-index: 1000;
   width: 150px;
   background-color: rgba(0, 0, 0, 0.3);
   padding: 0;
@@ -302,15 +302,6 @@ header:hover .headD a:hover {
   color: #fff;
   color: var(--text-bright-color); */
   position: relative;
-}
-.conA h1 {
-  position: absolute;  
-  top: 60%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3em;
-  margin: 0;
-  z-index: 1;
 }
 
 .conB {
@@ -535,3 +526,4 @@ footer .contain {
       font-size: 18px; /* 아이콘 크기 축소 */
     }
 }
+
