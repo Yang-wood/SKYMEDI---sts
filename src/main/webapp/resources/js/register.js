@@ -75,6 +75,7 @@ $(document).ready(function () {
         }
     });
     
+    // 이름 확인
     $("#name").on("blur", function() {
 		const name = $(this).val().trim();
 		const nameRegex = /^[가-힣a-zA-Z]{2,20}$/;
@@ -89,42 +90,42 @@ $(document).ready(function () {
    		}
 	});
 	
-	// 이메일 앞 주소
+	//이메일 앞 주소
 	$("#femail").on("blur", function () {
-        const id = $(this).val().trim();
-        const idRegex = /^[a-z0-9]{4,16}$/;
-        const msg = $("#email_msg");
-
-        if (id === "") {
-            msg.text("이메일 주소를 입력해주세요.").css("color", "red");
-        } else if (!idRegex.test(id)) {
-            msg.text("이메일 주소는 4~16자의 영문 소문자와 숫자만 가능합니다.").css("color", "red");
-        } else {
-            msg.text("");
-        }
-    });
-    
-    // 이메일 뒷 주소
-    const selected = $("#emailSelect").val();
-    const lemail = $("#lemail");
-    if(selected === "none") {
+	    const id = $(this).val().trim();
+	    const idRegex = /^[a-z0-9]{4,16}$/;
+	    const msg = $("#email_msg");
+	
+	    if (id === "") {
+	        msg.text("이메일 주소를 입력해주세요.").css("color", "red");
+	    } else if (!idRegex.test(id)) {
+	        msg.text("이메일 주소는 4~16자의 영문 소문자와 숫자만 가능합니다.").css("color", "red");
+	    } else {
+	        msg.text("");
+	    }
+	});
+	
+	// 이메일 뒷 주소
+	const selected = $("#emailSelect").val();
+	const lemail = $("#lemail");
+	if(selected === "none") {
 		lemail.val("");
 		lemail.prop("readonly", true);
 	}
-    $("#emailSelect").on("change", function() {
+	$("#emailSelect").on("change", function() {
 		const selected = $(this).val();
-    	const lemail = $("#lemail");
-    	
-    	if (selected === "none") {
-        	lemail.val("");
-        	lemail.prop("readonly", true);
-    	} else if (selected === "self") {
-        	lemail.val("");
-        	lemail.prop("readonly", false);
-    	} else {
-        	lemail.val(selected);
-        	lemail.prop("readonly", true);
-    	}
+		const lemail = $("#lemail");
+		
+		if (selected === "none") {
+	    	lemail.val("");
+	    	lemail.prop("readonly", true);
+		} else if (selected === "self") {
+	    	lemail.val("");
+	    	lemail.prop("readonly", false);
+		} else {
+	    	lemail.val(selected);
+	    	lemail.prop("readonly", true);
+		}
 	});
 	
 	$("#lemail").on("blur", function () {
@@ -142,7 +143,8 @@ $(document).ready(function () {
 	        }
 	    }
 	});
-	$("form").on("submit", function (e) {
+	
+	$("#reg_form").on("submit", function (e) {
         const id = $("#username").val().trim();
         const pw = $("#password").val().trim();
         const pwChk = $("#pwChk").val().trim();
@@ -150,6 +152,7 @@ $(document).ready(function () {
         const femail = $("#femail").val().trim();
         const lemail = $("#lemail").val().trim();
         const emailSelect = $("#emailSelect").val();
+        $("#email").val(femail + "@" + lemail);
 
         const idRegex = /^[a-z0-9]{4,16}$/;
         const pwRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,20}$/;
@@ -207,8 +210,6 @@ $(document).ready(function () {
                 return false;
             }
         }
-        // 최종 이메일 hidden에 입력
-        $("#email").val(femail + "@" + lemail);
     });
 });
 

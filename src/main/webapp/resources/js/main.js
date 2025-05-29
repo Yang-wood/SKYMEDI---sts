@@ -84,13 +84,32 @@ $(document).ready(function(){
 	    	lemail.prop("readonly", true);
 		}
 	});
-	$("form").on("submit", function() {
+	
+	$("#lemail").on("blur", function () {
+    	const domain = $(this).val().trim();
+    	const msg = $("#email_msg");
+    	const domainRegex = /^[a-z0-9.-]+\.[a-z]{2,}$/;
+
+	    if ($("#emailSelect").val() === "self") {
+	        if(domain === null || domain === "") {
+				msg.text("이메일 주소를 입력해주세요.").css("color", "red");
+			} else if (!domainRegex.test(domain)) {
+	            msg.text("이메일 주소를 잘못 입력하셨습니다.").css("color", "red");
+	        } else {
+	            msg.text("");
+	        }
+	    }
+	});
+	
+	$("#modal_form").on("submit", function() {
 		// 최종 이메일 hidden에 입력
 		const femail = $("#femail").val().trim();
         const lemail = $("#lemail").val().trim();
         const emailSelect = $("#emailSelect").val();
 	    $("#email").val(femail + "@" + lemail);
 	});
+	
+	
 	
 	// 모달 기능 구현
 	$("#modalShow").on("click", function() {

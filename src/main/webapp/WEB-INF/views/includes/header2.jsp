@@ -34,7 +34,7 @@
     <link href="${ctx}/resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	
 	<!-- Self CSS -->
-	<link href="${ctx}/resources/css/main2.css" rel="stylesheet">
+	<link href="${ctx}/resources/css/main3.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -44,6 +44,45 @@
 	<!-- Bootstrap CSS -->
   	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"> -->
   	<link rel="stylesheet" href="${ctx }/resources/css/main3.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script type="text/javascript">
+	 	// 모달 변화 기능
+	 var ctx = "${ctx}"
+	 $(document).ready(function() {
+		$("#writer_modal").on("click", function() {
+			$("#modal_form").attr("action", ctx + "/guest/loginPost");
+		});
+		$("#list_modal").on("click", function() {
+			$("#modal_form").attr("action", ctx + "/guest/findPost");
+		});
+		
+		$("#modal_form").on("submit", function(e) {
+	        e.preventDefault();
+	        
+	        $.ajax({
+	            type: "POST",
+	            url: "${ctx}/guest/findPost",
+	            contentType: "application/json",
+	            data: JSON.stringify({
+	                femail: $("#g_femail").val(),
+	                lemail: $("#g_lemail").val(),
+	                g_password: $("#g_password").val()
+	            }),
+	            success: function(response) {
+	                if (response.success) {
+	                    window.location.href = response.redirectUrl;
+	                } else {
+	                    alert(response.message);
+	                    // 모달 유지, 입력값 초기화하지 않음
+	                }
+	            },
+	            error: function() {
+	                alert("서버와의 통신 중 오류가 발생했습니다.");
+	            }
+	        });
+	    });
+	});
+  	</script>
 </head>
 <body>
     <header class="mainHeader">
@@ -87,7 +126,7 @@
                     		<li><a href="${ctx}/consult/writer">상담문의</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li><a href="#" id="modalShow">상담문의</a></li>
+                    		<li><a href="#" id="writer_modal" class="modalShow">상담문의</a></li>
                     	</c:otherwise>
                     </c:choose>
                     <li><a href="#">예약안내</a></li>
@@ -109,7 +148,15 @@
 					<li><a href="${ctx}/center/notice">공지사항</a></li>
 					<li><a href="#">자주하는 질문</a></li>
 					<li><a href="#">커뮤니티</a></li>
-					<li><a href="${ctx}/consult/list">내 상담내역</a></li>
+					<c:choose>
+                    	<c:when test="${not empty sessionScope.login}">
+                    		<li><a href="${ctx}/consult/list">내 상담내역</a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li><a href="#" id="list_modal" class="modalShow">내 상담내역</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+					
 				</ul>
 			</div>
 		</nav>
@@ -145,7 +192,7 @@
 	aria-labelledby="modallabel2" tabindex="-1" role="dialog">
 	<div class="modal-dialog" style="margin-top: 100px;">
 		<div class="modal-content">
-		<form action="${ctx}/guest/loginPost" method="post">
+		<form id="modal_form" action="#" method="post">
 			<div class="modal-header">
 				<h1 class="modal-title" id="modallabel2">비회원 로그인</h1>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -154,10 +201,10 @@
 				<div class="form-group">
 					<label for="email" class="control-label">이메일</label>
         						<div class="form-inline">
-	         						<input type="text" class="form-control" id="femail" name="femail" style="width: 30%;">
+	         						<input type="text" class="form-control" id="g_femail" name="femail" style="width: 30%;">
 	         						<span>@</span>
-					        		<input type="text" class="form-control" id="lemail" name="lemail" style="width: 30%;">
-					               <select id="emailSelect">
+					        		<input type="text" class="form-control" id="g_lemail" name="lemail" style="width: 30%;">
+					               <select id="g_emailSelect">
 					                   <option value="none">선택해주세요</option>
 					                   <option value="naver.com">naver.com</option>
 					                   <option value="kakao.com">kakao.com</option>
@@ -166,12 +213,13 @@
 					                   <option value="self">직접 입력</option>
 					               </select>
         						</div>
-			        <label id="email_msg"></label><br>
-			        <input type="hidden" name="g_email" id="email">
+			        <label id="g_email_msg"></label><br>
+			        <input type="hidden" name="g_email" id="g_email">
 				</div>
 				<div class="form-group">
 					<label for="g_pw" class="control-label">비밀번호</label>
-        						<input type="password" class="form-control" id="g_pw" name="g_password">
+    				<input type="password" class="form-control" id="g_password" name="g_password">
+    				<label id="g_pw_msg"></label>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -182,4 +230,3 @@
 		</div>
 	</div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

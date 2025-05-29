@@ -1,12 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../includes/header2.jsp" %>
 <link href="${ctx}/resources/css/register.css" rel="stylesheet">
+<style>
+	.conB {
+		height: 120vh;
+	}
+	
+	
+</style>
+
 <section class="conA">
 </section>
 
 <section class="conB">
     <div class="register-container">
-        <form action="${ctx}/member/register" method="post" autocomplete="off">
+        <form id="reg_form" action="${ctx}/member/register" method="post" autocomplete="off">
             <label>아이디</label>
             <div class="id_input">
 	            <input type="text" placeholder="아이디" id="username" name="username">
@@ -28,9 +36,9 @@
 			
 			<label>이메일</label>
 			<div class="email_input">
-               <input type="text" id="femail" placeholder="" class="mailInput" name="femail">
+               <input type="text" id="femail" name="femail">
                <span>@</span>
-               <input type="text" id="lemail" placeholder="" class="mailInput" name="lemail">
+               <input type="text" id="lemail" name="lemail">
                <select id="emailSelect">
                    <option value="none">선택해주세요</option>
                    <option value="naver.com">naver.com</option>
@@ -40,10 +48,10 @@
                    <option value="self">직접 입력</option>
                </select>
 			</div>
-               <label id="email_msg"></label><br>
+               <label id="email_msg"></label>
                <input type="hidden" name="email" id="email">
             <button type="submit">회원가입</button>
-            <button type="button">돌아가기</button>
+            <button type="button" onclick="history.back()">돌아가기</button>
         </form>
     </div>
 </section>

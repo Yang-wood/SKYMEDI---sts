@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,20 +25,20 @@ public class ConsultController {
 	@Autowired
 	private IConsultService service;
 	
-	@GetMapping("/check")
-	public String chkGet(HttpSession session) {
-		log.info("check.........");
-		try {
-			MemberDTO login = (MemberDTO)session.getAttribute("login");
-			if (login != null) {
-				return "redirect:/consult/writer";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return "/consult/check";
-	}
+//	@GetMapping("/check")
+//	public String chkGet(HttpSession session) {
+//		log.info("check.........");
+//		try {
+//			MemberDTO login = (MemberDTO)session.getAttribute("login");
+//			if (login != null) {
+//				return "redirect:/consult/writer";
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return "/consult/check";
+//	}
 	
 	@GetMapping("/writer")
 	public void writerGet(@ModelAttribute("mDto") MemberDTO mDto, @ModelAttribute("gDto") GuestDTO gDto) {
@@ -68,6 +69,21 @@ public class ConsultController {
 		}
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/list")
+	public void listGet(Model model, HttpSession session) {
+		log.info("list.........");
+		
+		Object mem = session.getAttribute("login");
+		Object guest = session.getAttribute("guestInfo");
+		if (mem != null) {
+			log.info("mem =====>" + mem);
+		} else if (guest != null) {
+			log.info("guest =====> " + guest);
+		}
+		
+		
 	}
 	
 }
