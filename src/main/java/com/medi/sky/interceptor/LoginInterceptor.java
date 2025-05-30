@@ -41,17 +41,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		}
 	}
 	
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		HttpSession session = request.getSession();
-		
-		if (session.getAttribute(LOGIN) != null) {
-			log.info("clear login data before");
-			
-			session.removeAttribute(LOGIN);
-		}
-		
-		return true;
-	}
+//	@Override
+//	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+//			throws Exception {
+//		HttpSession session = request.getSession();
+//		
+//		if (session.getAttribute(LOGIN) != null) {
+//			log.info("clear login data before");
+//			
+//			session.removeAttribute(LOGIN);
+//		}
+//		
+//		return true;
+//	}
 }

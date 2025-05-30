@@ -338,13 +338,13 @@
   height: 30vh;
   max-height: 50px;
   background: #f5f5f5;
+  position: relative;
   /* background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url(../img/sub_conA.png);
   color: #fff;
   color: var(--text-bright-color); */
-  position: relative;
 }
 
 .conB {

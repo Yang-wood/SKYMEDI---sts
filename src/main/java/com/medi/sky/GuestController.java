@@ -1,21 +1,16 @@
 package com.medi.sky;
 
-import java.net.http.HttpRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.medi.sky.domain.GuestDTO;
 import com.medi.sky.service.IGuestService;
@@ -35,16 +30,18 @@ public class GuestController {
 		log.info("Guest register........");
 		try {
 			GuestDTO guest = service.findGuest(gDto);
+			log.info("findGuest result: " + guest);
 			if (guest == null) {
 				int rs = service.register(gDto);
 				if (rs > 0) {
 					log.info("guest 등록 성공");
+					guest = service.findGuest(gDto);
 				} else {
-					log.info("guest 등록 실패");
+					log.error("guest 등록 실패");
 				}
-				guest = service.findGuest(gDto);
-				session.setAttribute("guestInfo", guest);
 			}
+			session.setAttribute("guestInfo", guest);
+			log.info("guestInfo : " + session.getAttribute("guestInfo"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,18 +49,28 @@ public class GuestController {
 	}
 	
 	@PostMapping ("/findPost")
-	public String findPost(GuestDTO gDto, HttpSession session) {
+	@ResponseBody
+	public Map<String, Object> findPost(@RequestBody GuestDTO gDto, HttpSession session) {
 		log.info("find Guest..........");
+		
+		Map<String, Object> rs = new HashMap<>();
+		
 		try {
 			GuestDTO guestInfo = service.findGuest(gDto);
 			log.info("guestInfo =====>" + guestInfo);
-			if (guestInfo == null ) {
-				
+			if (guestInfo != null ) {
+				session.setAttribute("guestInfo", guestInfo);
+				rs.put("success", true);
+				rs.put("redirectUrl", "/consult/list");
+			} else {
+				rs.put("success", false);
+				rs.put("message", "이메일 또는 비밀번호가 일치하지 않습니다.");
 			}
-			session.setAttribute("guestInfo", guestInfo);
 		} catch (Exception e) {
-			e.printStackTrace();
+			rs.put("success", false);
+	        rs.put("message", "서버 오류 발생: " + e.getMessage());
+	        e.printStackTrace();
 		}
-		return "redirect:/consult/list";
+		return rs;
 	}
 }

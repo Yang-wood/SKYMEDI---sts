@@ -32,6 +32,17 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	<!-- 뒤로가기 캐시 필터 -->
+	<filter>
+	    <filter-name>NoCacheFilter</filter-name>
+	    <filter-class>com.medi.sky.NoCacheFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+	    <filter-name>NoCacheFilter</filter-name>
+	    <url-pattern>/*</url-pattern> <!-- 전체 URL에 필터 적용 -->
+	</filter-mapping>
+	
 	<!-- Processes application requests -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>

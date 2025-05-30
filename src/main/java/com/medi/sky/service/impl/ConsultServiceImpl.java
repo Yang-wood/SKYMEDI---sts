@@ -24,9 +24,13 @@ public class ConsultServiceImpl implements IConsultService{
 	}
 
 	@Override
-	public List<ConsultDTO> listAll(Criteria cri) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ConsultDTO> listByMno(Integer mno) throws Exception {
+		return dao.listByMno(mno);
+	}
+
+	@Override
+	public List<ConsultDTO> listByGno(Integer gno) throws Exception {
+		return dao.listByGno(gno);
 	}
 	
 }

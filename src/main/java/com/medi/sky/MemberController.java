@@ -1,18 +1,15 @@
 package com.medi.sky;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.net.URI;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +30,14 @@ public class MemberController {
 	private IMemberService service;
 	
 	@GetMapping("/login")
-	public void loginGet(@ModelAttribute("mDto") MemberDTO mDto) throws Exception {
+	public String loginGet(@ModelAttribute("mDto") MemberDTO mDto, HttpSession session) throws Exception {
 		log.info("login Get..........");
-		
+		Object loginState = session.getAttribute("login");
+		log.info(loginState);
+		if (loginState != null) {
+			return "redirect:/";
+		}
+		return "member/login";
 	}
 	
 	@PostMapping("/login")
@@ -81,13 +83,21 @@ public class MemberController {
 	}
 	
 	@GetMapping("/register")
-	public void registerGet(MemberDTO mDto, HttpServletRequest request, HttpSession session) {
+	public String registerGet(@ModelAttribute("mDto") MemberDTO mDto, HttpServletRequest request, HttpSession session) {
 		log.info("register get..........");
+		session.removeAttribute("dest");
+		// 회원가입 페이지 진입 시 현재 URL 저장 (로그인 필요 페이지에서 왔을 경우)
+	    String referer = request.getHeader("Referer");
+	    if (referer != null && !referer.contains("/register")) {
+	        session.setAttribute("dest", referer);
+	    }
+	    return "/member/register";
 		
 	}
 	
 	@PostMapping("/register")
-	public String registerPost(MemberDTO mDto, HttpSession session, Model model) {
+	public String registerPost(MemberDTO mDto, HttpSession session, 
+			Model model, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			log.info("register post........");
 			log.info("register : " + mDto);
@@ -98,14 +108,31 @@ public class MemberController {
 				return "redirect:/member/register";
 			}
 			session.setAttribute("login", mDto);
+			
+			String dest = (String)session.getAttribute("dest");
+			log.info("Original dest : " + dest);
+			session.removeAttribute("dest");
+			
+			if (dest == null || dest.isEmpty()) {
+				dest = request.getHeader("Referer");
+			}
+			
+			if (dest == null || dest.contains("/register") || dest.contains("/login")) {
+				dest = "/";
+			}
+			try {
+				URI uri = new URI(dest);
+				if (!uri.getHost().equals(request.getServerName())) {
+					dest = "/";
+				}
+			} catch (Exception e) {
+				dest = "/";
+			}
+			return "redirect:" + dest;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Registration failed", e);
+			return "redirect:/member/register";
 		}
-		String dest = (String)session.getAttribute("dest");
-		if (dest == null || dest.equals("null")) {
-			dest = "/";
-		}
-		return "redirect:" + dest;
 	}
 	
 	@GetMapping("/existID")

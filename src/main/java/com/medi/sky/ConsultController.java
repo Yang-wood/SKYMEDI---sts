@@ -1,5 +1,8 @@
 package com.medi.sky;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +57,7 @@ public class ConsultController {
 		log.info("Title : " + cDto.getTitle());
 		log.info("Content : " + cDto.getContent());
 		
-		
+		log.info("login 정보 : " + mDto + " | " + gDto);
 		if (mDto != null) {
 			cDto.setMno(mDto.getMno());
 			cDto.setUsername(mDto.getUsername());
@@ -64,26 +67,32 @@ public class ConsultController {
 		}
 		try {
 			service.register(cDto);
+			log.info("ConsultDTO : " + cDto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/";
+		return "consult/success";
 	}
 	
 	@GetMapping("/list")
-	public void listGet(Model model, HttpSession session) {
+	public void listByNo(Model model, HttpSession session) {
 		log.info("list.........");
-		
-		Object mem = session.getAttribute("login");
-		Object guest = session.getAttribute("guestInfo");
-		if (mem != null) {
-			log.info("mem =====>" + mem);
-		} else if (guest != null) {
-			log.info("guest =====> " + guest);
+		List<ConsultDTO> list = new ArrayList<>();
+		MemberDTO mem = (MemberDTO)session.getAttribute("login");
+		GuestDTO guest = (GuestDTO)session.getAttribute("guestInfo");
+		try {
+			if (mem != null) {
+				Integer mno = mem.getMno();
+				list = service.listByMno(mno);
+			} else if (guest != null) {
+				Integer gno = guest.getGno();
+				list = service.listByGno(gno);
+			}
+			model.addAttribute("list", list);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		
 	}
 	
 }

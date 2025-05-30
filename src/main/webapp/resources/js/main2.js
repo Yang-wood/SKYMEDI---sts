@@ -157,7 +157,7 @@ $(document).ready(function() {
 	
     
 	// 모달 기능 구현
-	const openModal2 = null;
+	let openModal2 = false;
 	$(".modalShow").on("click", function() {
 		$("#modal1").modal("show");
 	});
@@ -168,6 +168,7 @@ $(document).ready(function() {
 	});
 	
 	$("#modal1").on("hidden.bs.modal", function() {
+	    document.activeElement.blur();
 	    if (openModal2) {
 			$('#modal2').modal('show');
 			openModal2 = false;

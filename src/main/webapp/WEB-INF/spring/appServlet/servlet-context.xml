@@ -32,10 +32,6 @@
 			<mapping path="/member/login"/>
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
-		<interceptor>
-			<mapping path="/consult/list"/>
-			<beans:ref bean="authInterceptor"/>
-		</interceptor>
 	</interceptors>
 	
 	<context:component-scan base-package="com.medi.sky" />

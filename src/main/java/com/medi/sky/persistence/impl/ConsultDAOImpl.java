@@ -23,8 +23,28 @@ public class ConsultDAOImpl implements IConsultDAO {
 	}
 
 	@Override
-	public List<ConsultDTO> listAll(Criteria cri) throws Exception {
-		return session.selectList(namespace + "listAll", cri);
+	public ConsultDTO read(ConsultDTO cDto) throws Exception {
+		return session.selectOne(namespace + "read", cDto);
+	}
+
+	@Override
+	public int update(ConsultDTO cDto) throws Exception {
+		return session.update(namespace + "update", cDto);
+	}
+
+	@Override
+	public int delete(Integer cno) throws Exception {
+		return session.delete(namespace + "delete", cno);
+	}
+
+	@Override
+	public List<ConsultDTO> listByMno(Integer mno) throws Exception {
+		return session.selectList(namespace + "listByMno", mno);
+	}
+
+	@Override
+	public List<ConsultDTO> listByGno(Integer gno) throws Exception {
+		return session.selectList(namespace + "listByGno", gno);
 	}
 
 }

@@ -4,7 +4,6 @@
 <c:set var="ctx" 
        value="${pageContext.request.contextPath == '/' ? '' : pageContext.request.contextPath }"
        scope="application"/>
-	
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,41 +44,51 @@
   	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"> -->
   	<link rel="stylesheet" href="${ctx }/resources/css/main3.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	
   	<script type="text/javascript">
 	 	// 모달 변화 기능
 	 var ctx = "${ctx}"
 	 $(document).ready(function() {
 		$("#writer_modal").on("click", function() {
-			$("#modal_form").attr("action", ctx + "/guest/loginPost");
+			$("#modal_form").data("mode", "submit");
 		});
 		$("#list_modal").on("click", function() {
-			$("#modal_form").attr("action", ctx + "/guest/findPost");
+			$("#modal_form").data("mode", "ajax");
 		});
 		
 		$("#modal_form").on("submit", function(e) {
-	        e.preventDefault();
-	        
-	        $.ajax({
-	            type: "POST",
-	            url: "${ctx}/guest/findPost",
-	            contentType: "application/json",
-	            data: JSON.stringify({
-	                femail: $("#g_femail").val(),
-	                lemail: $("#g_lemail").val(),
-	                g_password: $("#g_password").val()
-	            }),
-	            success: function(response) {
-	                if (response.success) {
-	                    window.location.href = response.redirectUrl;
-	                } else {
-	                    alert(response.message);
-	                    // 모달 유지, 입력값 초기화하지 않음
-	                }
-	            },
-	            error: function() {
-	                alert("서버와의 통신 중 오류가 발생했습니다.");
-	            }
-	        });
+			var mode = $(this).data("mode");
+			
+			if (mode === "ajax") {
+				e.preventDefault(); // 기본 제출 막기
+				var femail = $("#g_femail").val().trim()
+        		var lemail = $("#g_lemail").val().trim()
+                var fullEmail = femail + "@" + lemail
+                var password = $("#g_password").val().trim();
+				
+				$.ajax({
+		            type: "POST",
+		            url: "${ctx}/guest/findPost",
+		            contentType: "application/json",
+		            data: JSON.stringify({
+		                
+		            	g_email: fullEmail,
+		                g_password: password
+		                
+		            }),
+		            success: function(response) {
+		                if (response.success) {
+		                    window.location.href = ctx + response.redirectUrl;
+		                } else {
+		                    alert(response.message);
+		                    // 모달 유지, 입력값 초기화하지 않음
+		                }
+		            },
+		            error: function(xhr, status, error) {
+						alert("서버와의 통신 중 오류가 발생했습니다.");
+					}
+		        });
+			}
 	    });
 	});
   	</script>
@@ -181,7 +190,7 @@
       				<h4 class="modal-title" id="modallabel">로그인 방식을 선택하세요</h4>
 			</div>
 			<div class="modal-body">
-				<a class="btn btn-primary" href="${ctx}/member/login" role="button">회원</a>
+				<a class="btn btn-primary" id="consultBtn" href="${ctx }/member/login" role="button">회원</a>
 				<button class="btn btn-primary" id="guestBtn" data-dismiss="modal" data-toggle="modal" data-target="#modal2">비회원</button>
 			</div>
 		</div>
@@ -192,7 +201,7 @@
 	aria-labelledby="modallabel2" tabindex="-1" role="dialog">
 	<div class="modal-dialog" style="margin-top: 100px;">
 		<div class="modal-content">
-		<form id="modal_form" action="#" method="post">
+		<form id="modal_form" action="${ctx }/guest/loginPost" method="post">
 			<div class="modal-header">
 				<h1 class="modal-title" id="modallabel2">비회원 로그인</h1>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -230,3 +239,4 @@
 		</div>
 	</div>
 </div>
+

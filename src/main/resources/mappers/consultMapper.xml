@@ -12,4 +12,18 @@
 		#{g_email, jdbcType=VARCHAR}, #{title}, #{content}, sysdate)
 	</insert>
 	
+	<select id="listByMno" resultType="com.medi.sky.domain.ConsultDTO">
+		SELECT *
+		FROM consult
+		WHERE mno = #{mno}
+		ORDER BY reg_date DESC
+	</select>
+	
+	<select id="listByGno" resultType="com.medi.sky.domain.ConsultDTO">
+		SELECT *
+		FROM consult
+		WHERE gno = #{gno}
+		ORDER BY reg_date DESC
+	</select>
+	
 </mapper>
