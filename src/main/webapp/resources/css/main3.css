@@ -532,3 +532,275 @@
 .modal-content {
     z-index: 1060 !important;
 }
+
+/* 로그인 관련 */
+.login-container {
+	  background: #fff;
+	  padding: 50px 40px;
+	  border-radius: 16px;
+	  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+	  width: 450px;
+	  max-width: 100%;
+}
+
+.login-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.login-container .login {
+    width: 100%;
+    padding: 14px;
+    background: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.login-container .login:hover {
+    background: #2980b9;
+}
+
+.login-container .extra-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.login-container .extra-links a {
+    color: #666;
+    font-size: 15px;
+    text-decoration: none;
+    margin: 0 8px;
+}
+
+/* ✅ 모바일 반응형 스타일 */
+@media (max-width: 576px) {
+    .login-container {
+        width: 90%;
+        padding: 30px 20px;
+    }
+
+    .login-container h2 {
+        font-size: 20px;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .login-container .login {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .login-container .extra-links a {
+        font-size: 13px;
+    }
+}
+
+/* 회원가입 컨테이너 */
+.register-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    width: 450px;
+    margin: 0 auto;
+}
+
+/* 모달 헤더 */
+.modal-header {
+    background-color: #3498db;
+    color: white;
+    padding: 20px;
+    border-bottom: none;
+    text-align: center;
+    position: relative;
+}
+
+.header-radius {
+	border-radius: 10px;
+}
+
+.modal-header h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.modal-header .close {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: white;
+    opacity: 0.8;
+    font-size: 24px;
+    background: none;
+    border: none;
+}
+
+.modal-header .close:hover {
+    opacity: 1;
+}
+
+/* 폼 스타일 */
+#reg_form {
+    padding: 25px;
+}
+
+#reg_form label:not([id$="_msg"]) {
+    display: block;
+    margin: 10px 0 5px 0;
+    font-weight: 500;
+    color: #555;
+}
+
+#reg_form input[type="text"],
+#reg_form input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+#reg_form input[type="text"]:focus,
+#reg_form input[type="password"]:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 118, 168, 0.2);
+}
+
+/* 아이디 입력 영역 */
+.id_input {
+    display: flex;
+    gap: 10px;
+}
+
+.id_input input {
+    flex: 1;
+}
+
+#checkIdBtn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#checkIdBtn:hover {
+    background-color: #5a6268;
+}
+
+/* 이메일 입력 영역 */
+.email_input {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.email_input input {
+    flex: 1;
+}
+
+.email_input span {
+    font-weight: bold;
+    color: #555;
+}
+
+#emailSelect {
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+/* 메시지 라벨 스타일 */
+label[id$="_msg"] {
+    display: block;
+    font-size: 12px;
+    margin-top: 3px;
+    height: 15px;
+}
+
+/* 모달 푸터 */
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0 0 0;
+    border-top: none;
+}
+
+.modal-footer .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.modal-footer .btn-default {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.modal-footer .btn-default:hover {
+    background-color: #e2e6ea;
+}
+
+.modal-footer .btn-primary {
+    background-color: #3498db;
+    border: none;
+    color: white;
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: #3a5f8a;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 576px) {
+    .register-container {
+        width: 95%;
+    }
+    
+    .email_input {
+        flex-wrap: wrap;
+    }
+    
+    #emailSelect {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+.text-center {
+	text-align: center;
+	margin: 20px;
+}
+

@@ -19,4 +19,7 @@ public class ConsultDTO {
 	private String content;
 	private Date reg_date;
 	private String status;
+	
+	private int userSeq;
+	
 }

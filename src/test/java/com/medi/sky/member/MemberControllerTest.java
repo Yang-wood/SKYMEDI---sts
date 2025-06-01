@@ -1,4 +1,4 @@
-package com.medi.sky;
+package com.medi.sky.member;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

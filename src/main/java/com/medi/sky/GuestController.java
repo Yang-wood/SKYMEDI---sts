@@ -25,7 +25,7 @@ public class GuestController {
 	private IGuestService service;
 	
 	@PostMapping("/loginPost")
-	public String loginPost( GuestDTO gDto, HttpSession session) {
+	public String loginPost(GuestDTO gDto, HttpSession session) {
 		
 		log.info("Guest register........");
 		try {
@@ -61,6 +61,7 @@ public class GuestController {
 			if (guestInfo != null ) {
 				session.setAttribute("guestInfo", guestInfo);
 				rs.put("success", true);
+				rs.put("message", "비회원으로 로그인하였습니다.");
 				rs.put("redirectUrl", "/consult/list");
 			} else {
 				rs.put("success", false);

@@ -11,9 +11,9 @@ import com.medi.sky.persistence.IGuestDAO;
 public class GuestDAOImpl implements IGuestDAO {
 	@Autowired
 	private SqlSession sqlsession;
-	
+
 	private static final String namespace = "com.medi.sky.guestMapper.";
-	
+
 	@Override
 	public int insert(GuestDTO gDto) throws Exception {
 		return sqlsession.insert(namespace + "insert", gDto);

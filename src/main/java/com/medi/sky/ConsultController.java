@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.medi.sky.domain.ConsultDTO;
+import com.medi.sky.domain.Criteria;
 import com.medi.sky.domain.GuestDTO;
 import com.medi.sky.domain.MemberDTO;
+import com.medi.sky.domain.PageDTO;
 import com.medi.sky.service.IConsultService;
 
 import lombok.extern.log4j.Log4j;
@@ -49,7 +53,7 @@ public class ConsultController {
 	}
 	
 	@PostMapping("/register")
-	public String writerPost(@ModelAttribute ConsultDTO cDto, HttpSession session) {
+	public String register(@ModelAttribute ConsultDTO cDto, HttpSession session) {
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		GuestDTO gDto = (GuestDTO)session.getAttribute("guestInfo");
 		
@@ -76,23 +80,59 @@ public class ConsultController {
 	}
 	
 	@GetMapping("/list")
-	public void listByNo(Model model, HttpSession session) {
-		log.info("list.........");
+	public void listAll(Criteria cri, Model model, HttpSession session) {
+		log.info("Show All list........." + cri);
+		
 		List<ConsultDTO> list = new ArrayList<>();
+		int total = 0;
 		MemberDTO mem = (MemberDTO)session.getAttribute("login");
 		GuestDTO guest = (GuestDTO)session.getAttribute("guestInfo");
 		try {
 			if (mem != null) {
 				Integer mno = mem.getMno();
-				list = service.listByMno(mno);
+				list = service.listByMnoWithPaging(mno, cri);
+				total = service.getTotalCntMno(mno);
 			} else if (guest != null) {
 				Integer gno = guest.getGno();
-				list = service.listByGno(gno);
+				list = service.listByGnoWithPaging(gno, cri);
+				total = service.getTotalCntGno(gno);
 			}
 			model.addAttribute("list", list);
+			model.addAttribute("total", total);
+			model.addAttribute("cri", cri);
+			log.info("total : " + total);
+			
+			model.addAttribute("pageMaker", new PageDTO(cri, total));
+			
+			log.info("pageNum: " + cri.getPageNum() + ", " + "amount: " + cri.getAmount());
+			log.info("startRow: " + cri.getStartRow() + ", " + "endRow: " + cri.getEndRow());
+			log.info("Criteria: " + cri);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	@GetMapping(value = {"/modify", "/read"})
+	public void modifyGet(@RequestParam("cno") int cno, Criteria cri, Model model) throws Exception {
+		log.info("read	or	modify	:	GET");
+		model.addAttribute("consult", service.read(cno));
+		model.addAttribute("cri", cri);
+	}
+	
+	@PostMapping
+	public String modifyPost(ConsultDTO cDto, Criteria cri, RedirectAttributes rttr) throws Exception {
+		log.info("modify Post : " + cDto);
+		
+		if (service.modify(cDto) > 0) {
+			rttr.addFlashAttribute("result", "success");
+		}
+		
+		rttr.addAttribute("PageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
+		rttr.addAttribute("type", cri.getType());
+		rttr.addAttribute("keyword", cri.getKeyword());
+		
+		return "redirect:/consult/list";
+	}
 }

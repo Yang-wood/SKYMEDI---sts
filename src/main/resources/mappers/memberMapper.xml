@@ -11,6 +11,18 @@
 		#{email}, sysdate)
 	</insert>
 	
+	<delete id="delete">
+		DELETE
+		FROM member
+		WHERE mno = #{mno}
+	</delete>
+	
+	<update id="update">
+		UPDATE member
+		SET name = #{name}
+		WHERE mno = #{mno}
+	</update>
+	
 	<select id="selectId" resultType="int">
 		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
 		FROM member

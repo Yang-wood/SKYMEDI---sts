@@ -12,18 +12,68 @@
 		#{g_email, jdbcType=VARCHAR}, #{title}, #{content}, sysdate)
 	</insert>
 	
-	<select id="listByMno" resultType="com.medi.sky.domain.ConsultDTO">
+	<select id="read" resultType="com.medi.sky.domain.ConsultDTO">
 		SELECT *
 		FROM consult
-		WHERE mno = #{mno}
-		ORDER BY reg_date DESC
+		WHERE cno = #{cno}
 	</select>
 	
-	<select id="listByGno" resultType="com.medi.sky.domain.ConsultDTO">
+	<update id="update">
+		UPDATE consult
+		SET title = #{title}, content = #{content}
+		WHERE cno = #{cno}
+	</update>
+	
+	<delete id="delete">
+		DELETE
+		FROM consult
+		WHERE cno = #{cno}
+	</delete>
+	
+	<select id="listByMnoWithPaging" resultType="com.medi.sky.domain.ConsultDTO" parameterType="map">
+		<![CDATA[
 		SELECT *
+		FROM (
+			SELECT a.*, ROWNUM rn 
+			FROM (
+				SELECT * 
+				FROM consult
+				WHERE mno = #{mno}
+				ORDER BY cno DESC
+			) a
+			WHERE ROWNUM <= #{cri.endRow}
+		)
+		WHERE rn > #{cri.startRow}
+		]]>	
+	</select>
+	
+	<select id="getTotalCntMno" resultType="int">
+		SELECT COUNT(*)
+		FROM consult
+		WHERE mno = #{mno}
+	</select>
+	
+	<select id="listByGnoWithPaging" resultType="com.medi.sky.domain.ConsultDTO" parameterType="map">
+		<![CDATA[
+		SELECT *
+		FROM (
+			SELECT a.*, ROWNUM rn 
+			FROM (
+				SELECT * 
+				FROM consult
+				WHERE gno = #{gno}
+				ORDER BY cno DESC
+			) a
+			WHERE ROWNUM <= #{cri.endRow}
+		)
+		WHERE rn > #{cri.startRow}
+		]]>	
+	</select>
+	
+	<select id="getTotalCntGno" resultType="int">
+		SELECT COUNT(*)
 		FROM consult
 		WHERE gno = #{gno}
-		ORDER BY reg_date DESC
 	</select>
 	
 </mapper>

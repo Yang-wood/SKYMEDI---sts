@@ -1,6 +1,8 @@
 package com.medi.sky.persistence.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,8 @@ public class ConsultDAOImpl implements IConsultDAO {
 	}
 
 	@Override
-	public ConsultDTO read(ConsultDTO cDto) throws Exception {
-		return session.selectOne(namespace + "read", cDto);
+	public ConsultDTO read(int cno) throws Exception {
+		return session.selectOne(namespace + "read", cno);
 	}
 
 	@Override
@@ -33,18 +35,28 @@ public class ConsultDAOImpl implements IConsultDAO {
 	}
 
 	@Override
-	public int delete(Integer cno) throws Exception {
+	public int delete(int cno) throws Exception {
 		return session.delete(namespace + "delete", cno);
 	}
 
 	@Override
-	public List<ConsultDTO> listByMno(Integer mno) throws Exception {
-		return session.selectList(namespace + "listByMno", mno);
+	public List<ConsultDTO> listByMnoWithPaging(Map<String, Object> params) throws Exception {
+		return session.selectList(namespace + "listByMnoWithPaging", params);
+	}
+	
+	@Override
+	public int getTotalCntMno(int mno) throws Exception {
+		return session.selectOne(namespace + "getTotalCntMno", mno);
 	}
 
 	@Override
-	public List<ConsultDTO> listByGno(Integer gno) throws Exception {
-		return session.selectList(namespace + "listByGno", gno);
+	public List<ConsultDTO> listByGnoWithPaging(Map<String, Object> params) throws Exception {
+		return session.selectList(namespace + "listByGnoWithPaging", params);
+	}
+	
+	@Override
+	public int getTotalCntGno(int gno) throws Exception {
+		return session.selectOne(namespace + "getTotalCntGno", gno);
 	}
 
 }

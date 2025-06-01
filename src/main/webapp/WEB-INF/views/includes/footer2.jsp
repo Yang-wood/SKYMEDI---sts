@@ -83,6 +83,5 @@
 <!-- Custom Theme JavaScript -->
 <script src="${ctx}/resources/dist/js/sb-admin-2.js"></script>
 
-<script src="${ctx}/resources/js/main2.js"></script>
 </body>
 </html>

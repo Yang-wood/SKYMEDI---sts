@@ -42,56 +42,12 @@
     <![endif]-->
 	<!-- Bootstrap CSS -->
   	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"> -->
-  	<link rel="stylesheet" href="${ctx }/resources/css/main3.css">
+  	<link rel="stylesheet" href="${ctx}/resources/css/main3.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  	
   	<script type="text/javascript">
-	 	// 모달 변화 기능
-	 var ctx = "${ctx}"
-	 $(document).ready(function() {
-		$("#writer_modal").on("click", function() {
-			$("#modal_form").data("mode", "submit");
-		});
-		$("#list_modal").on("click", function() {
-			$("#modal_form").data("mode", "ajax");
-		});
-		
-		$("#modal_form").on("submit", function(e) {
-			var mode = $(this).data("mode");
-			
-			if (mode === "ajax") {
-				e.preventDefault(); // 기본 제출 막기
-				var femail = $("#g_femail").val().trim()
-        		var lemail = $("#g_lemail").val().trim()
-                var fullEmail = femail + "@" + lemail
-                var password = $("#g_password").val().trim();
-				
-				$.ajax({
-		            type: "POST",
-		            url: "${ctx}/guest/findPost",
-		            contentType: "application/json",
-		            data: JSON.stringify({
-		                
-		            	g_email: fullEmail,
-		                g_password: password
-		                
-		            }),
-		            success: function(response) {
-		                if (response.success) {
-		                    window.location.href = ctx + response.redirectUrl;
-		                } else {
-		                    alert(response.message);
-		                    // 모달 유지, 입력값 초기화하지 않음
-		                }
-		            },
-		            error: function(xhr, status, error) {
-						alert("서버와의 통신 중 오류가 발생했습니다.");
-					}
-		        });
-			}
-	    });
-	});
+  		const ctx = "${ctx}";
   	</script>
+  	<script src="${ctx}/resources/js/main2.js"></script>
 </head>
 <body>
     <header class="mainHeader">
@@ -109,8 +65,8 @@
                 		</c:when>
                 		<c:otherwise>
 	                		<!-- 로그아웃 상태 -->
-	                		<li><a href="${ctx}/member/login">로그인</a></li>
-	                    	<li><a href="${ctx}/member/register">회원가입</a></li>
+	                		<li><a href="#" class="loginModal">로그인</a></li>
+	                    	<li><a href="#" class="regModal">회원가입</a></li>
                 		</c:otherwise>
                 	</c:choose>
                 </ul>
@@ -135,7 +91,7 @@
                     		<li><a href="${ctx}/consult/writer">상담문의</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li><a href="#" id="writer_modal" class="modalShow">상담문의</a></li>
+                    		<li><a href="#" id="writer_modal" class="modalShow" data-dest="${ctx}/consult/writer">상담문의</a></li>
                     	</c:otherwise>
                     </c:choose>
                     <li><a href="#">예약안내</a></li>
@@ -162,15 +118,14 @@
                     		<li><a href="${ctx}/consult/list">내 상담내역</a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li><a href="#" id="list_modal" class="modalShow">내 상담내역</a></li>
+                    		<li><a href="#" id="list_modal" class="modalShow" data-dest="${ctx}/consult/list">내 상담내역</a></li>
                     	</c:otherwise>
                     </c:choose>
-					
 				</ul>
 			</div>
 		</nav>
         <button type="button" class="allMenu" aria-label="전체 메뉴 열기">
-					<span class="fa fa-bars" aria-hidden="true"></span>
+					<span class="fa fa-bars"></span>
 		</button>
         <!-- 로그아웃 메세지 -->
         <c:if test="${not empty logoutMsg}">
@@ -180,32 +135,60 @@
 		</c:if>
 		
 	</header>
-<div class="modal fade" id="modal1" 
+
+<!-- 로그인 선택 모달 start -->
+<div class="modal fade" id="select_modal" 
  	data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" 
- 	aria-labelledby="modallabel" aria-hidden="true" >
+ 	aria-labelledby="modallabel">
 	<div class="modal-dialog">
-		<div class="modal-content" style="z-index: 1050;">
+		<div class="modal-content">
 			<div class="modal-header">
       				<button type="button" class="close" data-dismiss="modal">&times;</button>
       				<h4 class="modal-title" id="modallabel">로그인 방식을 선택하세요</h4>
 			</div>
-			<div class="modal-body">
-				<a class="btn btn-primary" id="consultBtn" href="${ctx }/member/login" role="button">회원</a>
-				<button class="btn btn-primary" id="guestBtn" data-dismiss="modal" data-toggle="modal" data-target="#modal2">비회원</button>
+			<div class="modal-body text-center">
+				<button class="btn btn-primary" id="memberBtn" data-dismiss="modal" data-toggle="modal" data-target="#memberModal">회원</button>
+				<button class="btn btn-primary" id="guestBtn" data-dismiss="modal" data-toggle="modal" data-target="#guestModal">비회원</button>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="modal fade" id="modal2" aria-hidden="true" 
+</div><!-- 로그인 선택 모달 end -->
+
+<!-- 회원 로그인 모달 start -->
+<div class="modal fade" id="memberModal"
 	data-backdrop="static" data-keyboard="false"
 	aria-labelledby="modallabel2" tabindex="-1" role="dialog">
 	<div class="modal-dialog" style="margin-top: 100px;">
-		<div class="modal-content">
-		<form id="modal_form" action="${ctx }/guest/loginPost" method="post">
-			<div class="modal-header">
-				<h1 class="modal-title" id="modallabel2">비회원 로그인</h1>
+		<div class="login-container">
+        	<div class="modal-header header-radius">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h1 class="modal-title" id="modallabel2">로그인</h1>
 			</div>
+	        <form action="${ctx}/member/login" id="member_modal_form" method="post">
+	            <input type="text" name="username" id=m_username placeholder="아이디">
+	            <input type="password" name="password" id="m_password" placeholder="비밀번호">
+	            <button type="submit" class="login">로그인</button>
+	        </form>
+	        <div class="extra-links">
+	            <a href="#">아이디 찾기</a> |
+	            <a href="#">비밀번호 찾기</a> |
+	            <a href="#" class="regModal">회원가입</a>
+	        </div>
+    	</div>
+	</div>
+</div><!-- 회원 로그인 모달 end -->
+
+<!-- 비회원 로그인 모달 start -->
+<div class="modal fade" id="guestModal"
+	data-backdrop="static" data-keyboard="false"
+	aria-labelledby="modallabel2" tabindex="-1" role="dialog">
+	<div class="modal-dialog" style="margin-top: 100px;">
+		<div class="login-container">
+			<div class="modal-header header-radius">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h1 class="modal-title" id="modallabel2">비회원 로그인</h1>
+			</div>
+			<form id="guest_modal_form" action="${ctx }/guest/loginPost" method="post">
 			<div class="modal-body">
 				<div class="form-group">
 					<label for="email" class="control-label">이메일</label>
@@ -232,11 +215,66 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 				<button type="submit" class="btn btn-primary" id="gusetloginBtn">로그인</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 			</div>
 		</form>
 		</div>
+	</div>
+</div><!-- 비회원 로그인 모달 end -->
+
+<!-- 회원가입 모달 start -->
+<div class="modal fade" id="regModal"
+	data-backdrop="static" data-keyboard="false"
+	aria-labelledby="modallabel3" tabindex="-1" role="dialog">
+	<div class="modal-dialog" style="margin-top: 100px;">
+		<div class="register-container">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h1 class="modal-title" id="modallabel2">회원가입</h1>
+			</div>
+	        <form id="reg_form" action="${ctx}/member/register" method="post" autocomplete="off">
+	            <label>아이디</label>
+	            <div class="id_input">
+		            <input type="text" placeholder="아이디" id="username" name="username">
+		            <button type="button" id="checkIdBtn">중복확인</button>
+	            </div>
+	            <label id="username_msg"></label><br>
+	
+	            <label>비밀번호</label>
+	            <input type="password" placeholder="비밀번호" id="password" name="password">
+				<label id="pw_msg"></label><br>
+				
+	            <label>비밀번호확인</label>
+	            <input type="password" placeholder="비밀번호확인" id="pwChk" name="pwChk">
+				<label id="pwChk_msg"></label><br>
+				
+	            <label>이름</label>
+	            <input type="text" id="name" name="name">
+	            <label id="name_msg"></label><br>
+				
+				<label>이메일</label>
+				<div class="email_input">
+	               <input type="text" id="femail" name="femail">
+	               <span>@</span>
+	               <input type="text" id="lemail" name="lemail">
+	               <select id="emailSelect">
+	                   <option value="none">선택해주세요</option>
+	                   <option value="naver.com">naver.com</option>
+	                   <option value="kakao.com">kakao.com</option>
+	                   <option value="gmail.com">gmail.com</option>
+	                   <option value="daum.net">daum.net</option>
+	                   <option value="self">직접 입력</option>
+	               </select>
+				</div>
+	               <label id="email_msg"></label>
+	               <input type="hidden" name="email" id="email">
+	            <div class="modal-footer">
+					<button type="submit" class="btn btn-primary" id="regBtn">회원가입</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				</div>
+	        </form>
+	    </div>
 	</div>
 </div>
 
