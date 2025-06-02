@@ -52,7 +52,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 	        type: "POST",
-	        url: ctx + "/member/loginPost",
+	        url: ctx + "/member/loginUser",
 	        contentType: "application/json",
 	        data: JSON.stringify({
 	            
@@ -97,14 +97,9 @@ $(document).ready(function() {
         }
     });
     
-    $("#username").on("input", function () {
-	    checkIdPassed = false;  // 입력 시 무조건 false로 다시 설정
-	    $("#username_msg").text("아이디 중복 확인을 해주세요.").css("color", "red");
-	});
-    
-    // 아이디 중복버튼
+    // 아이디 중복검사
     let checkIdPassed = false;
-    $("#checkIdBtn").on("click", function(e) {
+    $("#username").on("blur", function(e) {
 		e.preventDefault(); // 기본 제출 막기
 		const id = $("#username").val().trim();
 		const msg = $("#username_msg");
@@ -172,13 +167,16 @@ $(document).ready(function() {
 		const nameRegex = /^[가-힣a-zA-Z]{2,20}$/;
 		const msg = $("#name_msg");
 		
-		if(name === null || name === "") {
+		if (name === "") {
 			msg.text("이름을 입력해주세요.").css("color", "red");
-		} else if(!nameRegex.test(name)) {
+		} else if (/\s/.test(name)) {
+			// 공백이 하나라도 포함되어 있으면
+			msg.text("이름에 공백을 포함할 수 없습니다.").css("color", "red");
+		} else if (!nameRegex.test(name)) {
 			msg.text("이름은 한글 또는 영문만 사용하며, 2~20자 이내여야 합니다.").css("color", "red");
 		} else {
-        	msg.text("");
-   		}
+			msg.text("");
+		}
 	});
 	
 	//이메일 앞 주소
@@ -223,16 +221,84 @@ $(document).ready(function() {
     	const domain = $(this).val().trim();
     	const msg = $("#email_msg");
     	const domainRegex = /^[a-z0-9.-]+\.[a-z]{2,}$/;
+    	const duplicateTldRegex = /\.(\w+)\.\1$/;
 
 	    if ($("#emailSelect").val() === "self") {
 	        if(domain === null || domain === "") {
 				msg.text("이메일 주소를 입력해주세요.").css("color", "red");
 			} else if (!domainRegex.test(domain)) {
 	            msg.text("이메일 주소를 잘못 입력하셨습니다.").css("color", "red");
-	        } else {
+	        } else if (duplicateTldRegex.test(domain)) {
+           		msg.text("도메인에 중복된 형식이 있습니다. 예: com.com").css("color", "red");
+        	} else {
 	            msg.text("");
 	        }
 	    }
+	});
+	
+	let checkIdPassed = false;
+    $("#username").on("blur", function(e) {
+		e.preventDefault(); // 기본 제출 막기
+		const id = $("#username").val().trim();
+		const msg = $("#username_msg");
+		
+		if(id === "") {
+			msg.text("아이디를 입력해주세요.").css("color", "red");
+			return;
+		}
+		
+		$.ajax({
+			url: "/sky/member/existID",
+			method: "GET",
+			data: {username:id},
+			success: function(rs) {
+				if(rs === 1) {
+					msg.text("이미 사용 중인 아이디입니다.").css("color", "red");
+					checkIdPassed = false;
+				} else {
+					msg.text("사용 가능한 아이디입니다.").css("color", "green");
+					checkIdPassed = true;
+				}
+			},
+			error: function() {
+				msg.text("서버 오류가 발생했습니다.").css("color", "red");
+			}
+		})
+	});
+	
+	// 회원 이메일 중복 검사
+	let checkEmailPassed = false;
+    $("#femail").on("blur", function(e) {
+		e.preventDefault();
+		const femail = $("#femail").val().trim();
+		const lemail = $("#lemail").val().trim();
+		const emailSelect = $("#emailSelect").val();
+        const fullEmail = femail + "@" + lemail
+        const msg = $("#email_msg");
+        const email = $("#email").val(fullEmail);
+		
+		if(email === "") {
+			msg.text("아이디를 입력해주세요.").css("color", "red");
+			return;
+		}
+		
+		$.ajax({
+			url: "/sky/member/existEmail",
+			method: "GET",
+			data: {email:fullEmail},
+			success: function(rs) {
+				if (rs === 1) {
+					msg.text("이미 사용 중인 이메일입니다.").css("color", "red");
+					checkEmailPassed = false;
+				} else {
+					msg.text("사용 가능한 이메일입니다.").css("color", "green");
+					checkEmailPassed = true;
+				}
+			},
+			error: function() {
+				msg.text("서버 오류가 발생했습니다.").css("color", "red");
+			}
+		})
 	});
 	
 	// 회원가입 유효성 검사 및 진행
@@ -306,7 +372,7 @@ $(document).ready(function() {
         
         $.ajax ({
 			type: "POST",
-			url: ctx + "/member/register",
+			url: ctx + "/member/insertUser",
 			contentType: "application/json",
 			data: JSON.stringify({
 				username: id,
@@ -333,6 +399,7 @@ $(document).ready(function() {
 			}
 		});
     });
+	
 	
 	
 	// 비회원 이메일 앞 주소
@@ -404,6 +471,8 @@ $(document).ready(function() {
         }
     });
     
+    
+    
     // 비회원 로그인 시 유효성 검사
     $("#guest_modal_form").on("submit", function(e) {
 		e.preventDefault();
@@ -446,11 +515,11 @@ $(document).ready(function() {
             }
         }
         //비회원 상담내역 로그인용
-		if (mode === "ajax") {
+		if (mode === "login") {
 			
 			$.ajax({
 	            type: "POST",
-	            url: ctx + "/guest/findPost",
+	            url: ctx + "/memeber/loginGuest",
 	            contentType: "application/json",
 	            data: JSON.stringify({
 	                
@@ -471,17 +540,70 @@ $(document).ready(function() {
 					alert("서버와의 통신 중 오류가 발생했습니다.");
 				}
 	        });
-		} else if (mode === "submit") {
+		} else if (mode === "insert") {
+			let checkEmailPassed = false;
+		    $("#g_femail").on("blur", function(e) {
+				e.preventDefault();
+				const femail = $("#g_femail").val().trim();
+				const lemail = $("#g_lemail").val().trim();
+				const emailSelect = $("#g_emailSelect").val();
+		        const fullEmail = femail + "@" + lemail
+		        const msg = $("#email_msg");
+				
+				$.ajax({
+					url: "/sky/member/existEmail",
+					method: "GET",
+					data: {email:fullEmail},
+					success: function(rs) {
+						if(rs === 1) {
+							msg.text("이미 사용 중인 이메일입니다.").css("color", "red");
+							checkEmailPassed = false;
+						} else {
+							msg.text("사용 가능한 이메일입니다.").css("color", "green");
+							checkEmailPassed = true;
+						}
+					},
+					error: function() {
+						msg.text("서버 오류가 발생했습니다.").css("color", "red");
+					}
+				})
+			});
+			
+			$.ajax({
+	            type: "POST",
+	            url: ctx + "/memeber/insertGuest",
+	            contentType: "application/json",
+	            data: JSON.stringify({
+	                
+	            	g_email: fullEmail,
+	                g_password: pw
+	                
+	            }),
+	            success: function(rs) {
+	                if (rs.success) {
+	                    window.location.href = ctx + rs.redirectUrl;
+	                    alert(rs.message);
+	                } else {
+	                    alert(rs.message);
+	                    // 모달 유지, 입력값 초기화하지 않음
+	                }
+	            },
+	            error: function(xhr, status, error) {
+					alert("서버와의 통신 중 오류가 발생했습니다.");
+				}
+	        });
+			
+			
 			this.submit();
 		}
 	});
 	
 	// 모달 변화 기능 (비회원 로그인용)
 	$("#writer_modal").on("click", function() {
-		$("#guest_modal_form").data("mode", "submit");
+		$("#guest_modal_form").data("mode", "insert");
 	});
 	$("#list_modal").on("click", function() {
-		$("#guest_modal_form").data("mode", "ajax");
+		$("#guest_modal_form").data("mode", "login");
 	});
     
 	// 모달 기능 구현

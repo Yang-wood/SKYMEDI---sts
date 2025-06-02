@@ -3,12 +3,20 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.medi.sky.memberMapper">
-	<insert id="insert">
+	<insert id="insertUser">
 		INSERT INTO member
-		(mno, username, password, name, email, reg_date)
+		(mno, username, password, name, email, reg_date, up_date)
 		VALUES
 		(member_seq.NEXTVAL, #{username}, #{password}, #{name}, 
-		#{email}, sysdate)
+		#{email}, sysdate, sysdate)
+	</insert>
+	
+	<insert id="insertGuest">
+		INSERT INTO member
+		(mno, username, password, name, email, reg_date, up_date, is_guest)
+		VALUES
+		(member_seq.NEXTVAL, "비회원_guest", #{password}, "비회원_guest", 
+		#{email}, sysdate, sysdate, 'Y')
 	</insert>
 	
 	<delete id="delete">
@@ -29,10 +37,39 @@
 		WHERE username = #{username}
 	</select>
 	
-	<select id="login" resultType="com.medi.sky.domain.MemberDTO">
+	<select id="selectEmail" resultType="int">
+		SELECT CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END
+		FROM member
+		WHERE email = #{email}
+	</select>
+	
+	<select id="loginUser" resultType="com.medi.sky.domain.MemberDTO">
 		SELECT *
 		FROM member
 		WHERE username = #{username}
 		AND password = #{password}
 	</select>
+	
+	<select id="loginguest" resultType="com.medi.sky.domain.MemberDTO">
+		SELECT *
+		FROM member
+		WHERE email = #{email}
+		AND password = #{password}
+	</select>
+	
+	<select id="searchID" resultType="com.medi.sky.domain.MemberDTO">
+		SELECT username
+		FROM member
+		WHERE name = #{name}
+		AND email = #{email}
+	</select>
+	
+	<select id="searchPW" resultType="com.medi.sky.domain.MemberDTO">
+		SELECT *
+		FROM member
+		WHERE name = #{name}
+		AND email = #{email}
+		AND username = #{username}
+	</select>
+	
 </mapper>

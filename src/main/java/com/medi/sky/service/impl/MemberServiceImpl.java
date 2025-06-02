@@ -16,23 +16,49 @@ import lombok.extern.log4j.Log4j;
 public class MemberServiceImpl implements IMemberService{
 	
 	@Autowired
-	private IMemberDAO dao;
+	private IMemberDAO mDao;
 	
 	@Override
-	@Transactional
-	public int register(MemberDTO memberDto) throws Exception {
-		return dao.insert(memberDto);
+	public int insertUser(MemberDTO mDto) throws Exception {
+		return mDao.insertUser(mDto);
 	}
 
 	@Override
-	public int existID(String username) throws Exception {
-		return dao.selectId(username);
+	public int insertGuest(MemberDTO mDto) throws Exception {
+		return mDao.insertGuest(mDto);
 	}
 
 	@Override
-	public MemberDTO login(MemberDTO memberDTO) throws Exception {
-		return dao.login(memberDTO);
+	public int existId(String username) throws Exception {
+		return mDao.selectId(username);
 	}
+
+	@Override
+	public MemberDTO loginUser(MemberDTO mDto) throws Exception {
+		return mDao.loginUser(mDto);
+	}
+
+	@Override
+	public MemberDTO loginGuest(MemberDTO mDto) throws Exception {
+		return mDao.loginGuest(mDto);
+	}
+
+	@Override
+	public MemberDTO searchID(MemberDTO mDto) throws Exception {
+		return mDao.searchID(mDto);
+	}
+
+	@Override
+	public MemberDTO searchPW(MemberDTO mDto) throws Exception {
+		return mDao.searchPW(mDto);
+	}
+
+	@Override
+	public int existEmail(String email) throws Exception {
+		return mDao.selectEmail(email);
+	}
+
+	
 
 	
 }

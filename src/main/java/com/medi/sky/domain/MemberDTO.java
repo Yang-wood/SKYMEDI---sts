@@ -16,8 +16,10 @@ public class MemberDTO {
 	private String name;
 	private String email;
 	private Date reg_date;
+	private Date up_date;
 	private Date del_date;
 	private char is_deleted;
 	private char share_agree;
 	private Date share_date;
+	private char is_guest;
 }

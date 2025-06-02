@@ -16,18 +16,8 @@ public class MemberDAOImpl implements IMemberDAO{
 	private static final String namespace = "com.medi.sky.memberMapper.";
 
 	@Override
-	public int insert(MemberDTO mDto) throws Exception {
-		return sqlsession.insert(namespace + "insert", mDto);
-	}
-
-	@Override
 	public int selectId(String username) throws Exception {
 		return sqlsession.selectOne(namespace + "selectId", username);
-	}
-
-	@Override
-	public MemberDTO login(MemberDTO mDto) throws Exception {
-		return sqlsession.selectOne(namespace + "login", mDto);
 	}
 
 	@Override
@@ -39,5 +29,42 @@ public class MemberDAOImpl implements IMemberDAO{
 	public int update(MemberDTO mDto) throws Exception {
 		return sqlsession.update(namespace + "update", mDto);
 	}
+
+	@Override
+	public int insertUser(MemberDTO mDto) throws Exception {
+		return sqlsession.insert(namespace + "insertUser", mDto);
+	}
+
+	@Override
+	public int insertGuest(MemberDTO mDto) throws Exception {
+		return sqlsession.insert(namespace + "insertGuest", mDto);
+	}
+
+	@Override
+	public MemberDTO loginUser(MemberDTO mDto) throws Exception {
+		return sqlsession.selectOne(namespace + "loginUser", mDto);
+	}
+
+	@Override
+	public MemberDTO loginGuest(MemberDTO mDto) throws Exception {
+		return sqlsession.selectOne(namespace + "loginguest", mDto);
+	}
+
+	@Override
+	public MemberDTO searchID(MemberDTO mDto) throws Exception {
+		return sqlsession.selectOne(namespace + "searchID", mDto);
+	}
+
+	@Override
+	public MemberDTO searchPW(MemberDTO mDto) throws Exception {
+		return sqlsession.selectOne(namespace + "searchPW", mDto);
+	}
+
+	@Override
+	public int selectEmail(String email) throws Exception {
+		return sqlsession.selectOne(namespace + "selectEmail", email);
+	}
+
+	
 	
 }

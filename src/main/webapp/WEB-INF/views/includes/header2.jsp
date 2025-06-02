@@ -59,9 +59,15 @@
                 <ul>
                 	<c:choose>
                 		<c:when test="${not empty sessionScope.login}">
-                			<!-- 로그인 상태 -->
+                			<!-- 회원 로그인 상태 -->
                 			<li><a href="${ctx}/member/logout">로그아웃</a></li>
 	                    	<li><a href="#">마이페이지</a></li>
+                		</c:when>
+                		
+                		<c:when test="${empty sessionScope.login and not empty sessionScope.guestInfo}">
+                			<!-- 비회원 로그인 상태 -->
+                			<li><a href="${ctx}/member/logout">로그아웃(비회원)</a></li>
+	                    	<li><a href="#" class="regModal">회원가입</a></li>
                 		</c:when>
                 		<c:otherwise>
 	                		<!-- 로그아웃 상태 -->
@@ -90,6 +96,9 @@
                     	<c:when test="${not empty sessionScope.login}">
                     		<li><a href="${ctx}/consult/writer">상담문의</a></li>
                     	</c:when>
+                    	<c:when test="${empty sessionScope.login and not empty sessionScope.guestInfo}">
+                			<li><a href="${ctx}/consult/writer">상담문의</a></li>
+                		</c:when>
                     	<c:otherwise>
                     		<li><a href="#" id="writer_modal" class="modalShow" data-dest="${ctx}/consult/writer">상담문의</a></li>
                     	</c:otherwise>
@@ -117,6 +126,9 @@
                     	<c:when test="${not empty sessionScope.login}">
                     		<li><a href="${ctx}/consult/list">내 상담내역</a></li>
                     	</c:when>
+                    	<c:when test="${empty sessionScope.login and not empty sessionScope.guestInfo}">
+                			<li><a href="${ctx}/consult/list">내 상담내역</a></li>
+                		</c:when>
                     	<c:otherwise>
                     		<li><a href="#" id="list_modal" class="modalShow" data-dest="${ctx}/consult/list">내 상담내역</a></li>
                     	</c:otherwise>
@@ -164,7 +176,7 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h1 class="modal-title" id="modallabel2">로그인</h1>
 			</div>
-	        <form action="${ctx}/member/login" id="member_modal_form" method="post">
+	        <form action="${ctx}/member/loginUser" id="member_modal_form" method="post">
 	            <input type="text" name="username" id=m_username placeholder="아이디">
 	            <input type="password" name="password" id="m_password" placeholder="비밀번호">
 	            <button type="submit" class="login">로그인</button>
@@ -188,7 +200,7 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h1 class="modal-title" id="modallabel2">비회원 로그인</h1>
 			</div>
-			<form id="guest_modal_form" action="${ctx }/guest/loginPost" method="post">
+			<form id="guest_modal_form" action="${ctx }/member/" method="post">
 			<div class="modal-body">
 				<div class="form-group">
 					<label for="email" class="control-label">이메일</label>
@@ -233,7 +245,7 @@
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h1 class="modal-title" id="modallabel2">회원가입</h1>
 			</div>
-	        <form id="reg_form" action="${ctx}/member/register" method="post" autocomplete="off">
+	        <form id="reg_form" action="${ctx}/member/insertUser" method="post" autocomplete="off">
 	            <label>아이디</label>
 	            <div class="id_input">
 		            <input type="text" placeholder="아이디" id="username" name="username">

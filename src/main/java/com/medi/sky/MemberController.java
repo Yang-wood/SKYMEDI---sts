@@ -1,18 +1,14 @@
 package com.medi.sky;
 
-import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.medi.sky.domain.GuestDTO;
 import com.medi.sky.domain.MemberDTO;
 import com.medi.sky.service.IMemberService;
 
@@ -32,31 +29,16 @@ public class MemberController {
 	@Autowired
 	private IMemberService service;
 	
-//	@GetMapping("/login")
-//	public String loginGet(@ModelAttribute("mDto") MemberDTO mDto, HttpSession session) throws Exception {
-//		log.info("login Get..........");
-//		session.removeAttribute("dest");
-//		if (referer != null && !referer.contains("/login")) {
-//	        session.setAttribute("dest", referer);
-//	    }
-//		Object loginState = session.getAttribute("login");
-//		log.info(loginState);
-//		if (loginState != null) {
-//			return "redirect:/";
-//		}
-//		return "member/login";
-//	}
-	
-	@PostMapping("/loginPost")
+	@PostMapping("/loginUser")
 	@ResponseBody
-	public Map<String, Object> loginPost(@RequestBody MemberDTO mDto, 
+	public Map<String, Object> loginUser(@RequestBody MemberDTO mDto, 
 			HttpSession session) throws Exception {
 		log.info("Member Login...........");
 		Map<String, Object> rs = new HashMap<>();
 		
 		
 		try {
-			MemberDTO memInfo = service.login(mDto);
+			MemberDTO memInfo = service.loginUser(mDto);
 			log.info("memInfo ====> " + memInfo);
 			
 			if (memInfo == null) {
@@ -65,14 +47,6 @@ public class MemberController {
 			} else {
 				session.setAttribute("login", memInfo);
 				rs.put("success", true);
-//				String dest = (String)session.getAttribute("dest");
-//				log.info("dest : " + dest);
-//				session.removeAttribute("dest");
-//				
-//				if (dest == null || dest.equals("null") || dest.contains("/login") ) {
-//					dest = "/";
-//				}
-//				rs.put("redirectUrl", dest);
 			}
 			
 		} catch (Exception e) {
@@ -83,18 +57,57 @@ public class MemberController {
 		return rs;
 	}
 	
+	@PostMapping("/loginGuest")
+	@ResponseBody
+	public Map<String, Object> loginGuest(@RequestBody MemberDTO mDto, 
+			HttpSession session) throws Exception {
+		log.info("Member Login...........");
+		Map<String, Object> rs = new HashMap<>();
+		
+		
+		try {
+			MemberDTO guestInfo = service.loginGuest(mDto);
+			log.info("memInfo ====> " + guestInfo);
+			
+			if (guestInfo == null) {
+				rs.put("success", false);
+				rs.put("message", "이메일 또는 비밀번호가 일치하지 않습니다.");
+			} else {
+				session.setAttribute("guestInfo", guestInfo);
+				rs.put("success", true);
+				rs.put("message", "비회원으로 로그인하였습니다.");
+				rs.put("redirectUrl", "/consult/list");
+			}
+			
+		} catch (Exception e) {
+			rs.put("success", false);
+			rs.put("message", "서버 오류 발생: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
 	@GetMapping("/logout")
 	public String logout(HttpSession session, RedirectAttributes rttr) {
 		log.info("logout..............");
 		
 		try {
 			//로그인 정보 삽입
-			Object obj = session.getAttribute("login");
+			Object mem = session.getAttribute("login");
+			Object guest = session.getAttribute("guestInfo");
 			
-			if (obj != null) {
+			
+			if (mem != null) {
 				rttr.addFlashAttribute("logoutMsg", "로그아웃되었습니다.");
 				//세션 정보 제거
 				session.removeAttribute("login");
+				//세션 객체 제거
+				session.invalidate();
+			}
+			if (guest != null) {
+				rttr.addFlashAttribute("logoutMsg", "로그아웃되었습니다.");
+				//세션 정보 제거
+				session.removeAttribute("guestInfo");
 				//세션 객체 제거
 				session.invalidate();
 			}
@@ -104,27 +117,15 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-//	@GetMapping("/register")
-//	public String registerGet(@ModelAttribute("mDto") MemberDTO mDto, HttpServletRequest request, HttpSession session) {
-//		log.info("register get..........");
-//		session.removeAttribute("dest");
-//		// 회원가입 페이지 진입 시 현재 URL 저장 (로그인 필요 페이지에서 왔을 경우)
-//	    String referer = request.getHeader("Referer");
-//	    if (referer != null && !referer.contains("/register")) {
-//	        session.setAttribute("dest", referer);
-//	    }
-//	    return "/member/register";
-//	}
-	
-	@PostMapping("/register")
+	@PostMapping("/insertUser")
 	@ResponseBody
-	public Map<String, Object> register(@RequestBody MemberDTO mDto, HttpSession session) {
-		log.info("register post........");
-		log.info("register : " + mDto);
+	public Map<String, Object> insertUser(@RequestBody MemberDTO mDto, HttpSession session) {
+		log.info("insertUser post........");
+		log.info("insertUser : " + mDto);
 		
 		Map<String, Object> rs = new HashMap<>();
 		try {
-			int regInfo = service.register(mDto);
+			int regInfo = service.insertUser(mDto);
 			if (regInfo > 0) {
 				rs.put("success", true);
 				rs.put("message", "회원가입이 완료되었습니다.");
@@ -132,10 +133,38 @@ public class MemberController {
 				rs.put("success", false);
 				rs.put("message", "회원가입에 실패했습니다.");
 			}
-//			
+		
 		} catch (Exception e) {
 			rs.put("success", false);
 	        e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	@PostMapping("/insertGuest")
+	@ResponseBody
+	public Map<String, Object> insertGuest(@RequestBody MemberDTO mDto, HttpSession session) {
+		log.info("insertGuest post........");
+		log.info("insertGuest : " + mDto);
+		
+		Map<String, Object> rs = new HashMap<>();
+		
+		try {
+			int guest = service.insertGuest(mDto);
+			log.info("findGuest result: " + guest);
+			if (guest > 0) {
+				rs.put("success", true);
+				rs.put("message", "비회원으로 가입하였습니다.");
+				rs.put("redirectUrl", "/consult/writer");
+				session.setAttribute("guestInfo", guest);
+			} else {
+				rs.put("success", false);
+				rs.put("message", "비회원 가입이 실패했습니다.");
+			}
+			session.setAttribute("guestInfo", guest);
+			log.info("guestInfo : " + session.getAttribute("guestInfo"));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return rs;
 	}
@@ -144,7 +173,14 @@ public class MemberController {
 	@ResponseBody
 	public int existID(@RequestParam("username") String username) throws Exception {
 		
-		return service.existID(username);
+		return service.existId(username);
+	}
+	
+	@GetMapping("/existEmail")
+	@ResponseBody
+	public int existEmail(@RequestParam("email") String email) throws Exception {
+		
+		return service.existEmail(email);
 	}
 	
 }

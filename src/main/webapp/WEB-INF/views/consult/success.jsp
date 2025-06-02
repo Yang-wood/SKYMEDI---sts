@@ -1,10 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-    if (session.getAttribute("guestInfo") != null) {
-        session.removeAttribute("guestInfo");
-        System.out.println("========= guestInfo : " + session.getAttribute("guestInfo"));
-    }
-%>
 <%@ include file="../includes/header2.jsp" %>
 <style>
   .conB {

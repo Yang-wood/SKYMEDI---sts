@@ -62,25 +62,27 @@ public class ConsultControllerTest {
 //	}
 	
 	// 반복 등록 테스트
-//	@Test
-//	public void testRepeatReg() throws Exception {
-//		
-//		IntStream.rangeClosed(101, 10000).forEach(i -> {
-//			ConsultDTO cDto = new ConsultDTO();
-//			
-//			try {
-//				cDto.setMno(48);
-//				cDto.setUsername("test1");
-//				cDto.setTitle("페이징 테스트" + i);
-//				cDto.setContent("페이징 내용 연습" + i);
-//				service.register(cDto);
-//				log.info("등록 성공" + i);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				fail("등록 중 예외 발생" + e.getMessage());
-//			}
-//		});
-//	}
+	@Test
+	public void testRepeatReg() throws Exception {
+		
+		IntStream.rangeClosed(101, 1000).forEach(i -> {
+			ConsultDTO cDto = new ConsultDTO();
+			
+			try {
+				cDto.setMno(8);
+				cDto.setUsername("test1");
+//				cDto.setGno(21);
+//				cDto.setG_email("user01@naver.com");
+				cDto.setTitle("페이징 테스트" + i);
+				cDto.setContent("페이징 내용 연습" + i);
+				service.register(cDto);
+				log.info("등록 성공" + i);
+			} catch (Exception e) {
+				e.printStackTrace();
+				fail("등록 중 예외 발생" + e.getMessage());
+			}
+		});
+	}
 	
 //	@Test
 //	public void testList() throws Exception {
@@ -97,20 +99,20 @@ public class ConsultControllerTest {
 //		log.info(rs);
 //	}
 	
-	@Test
-	public void testList() throws Exception {
-		GuestDTO gDto = new GuestDTO();
-		gDto.setGno(21);
-		
-		MvcResult re = mvc.perform(MockMvcRequestBuilders.get("/consult/list")
-				.sessionAttr("guestInfo", gDto)
-				.param("pageNum", "1").param("amount", "10"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andReturn();
-		
-		String rs = re.getModelAndView().getViewName();
-		log.info(rs);
-	}
+//	@Test
+//	public void testList() throws Exception {
+//		GuestDTO gDto = new GuestDTO();
+//		gDto.setGno(21);
+//		
+//		MvcResult re = mvc.perform(MockMvcRequestBuilders.get("/consult/list")
+//				.sessionAttr("guestInfo", gDto)
+//				.param("pageNum", "1").param("amount", "10"))
+//				.andExpect(MockMvcResultMatchers.status().isOk())
+//				.andReturn();
+//		
+//		String rs = re.getModelAndView().getViewName();
+//		log.info(rs);
+//	}
 	
 //	@Test
 //	public void testRead() throws Exception {

@@ -22,14 +22,14 @@
 	    	<c:forEach items="${list }" var="consult" varStatus="status">
 	    		<tr>
 	    			<td>${startNum - status.index}</td>
-	    			<td><a class="move" href="${consult.cno }">${consult.title}</a></td>
+	    			<td><a class="move" href="${consult.cno }"><c:out value="${consult.title}" /></a></td>
 	    			<td>
 		    			<c:choose>
 							<c:when test="${not empty sessionScope.login }">
-								${sessionScope.login.username}
+								<c:out value="${sessionScope.login.username}" />
 							</c:when>
 							<c:when test="${not empty sessionScope.guestInfo}">
-								${sessionScope.guestInfo.g_email}
+								<c:out value="${sessionScope.guestInfo.g_email}" />
 							</c:when>
 		    			</c:choose>
 	    			</td>
@@ -58,7 +58,7 @@
 		</c:if>
 		<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage }">
 		    <li class="${pageMaker.cri.pageNum == num ? 'active' : ''}">
-			    <a href="?pageNum=${num}&amount=${pageMaker.cri.amount}">${num }</a>
+			    <a href="?pageNum=${num}&amount=${pageMaker.cri.amount}" >${num }</a>
 		    </li>
 		</c:forEach>
 	   	<c:if test="${pageMaker.next }">
